@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Settings>
+  <settings>
+    <keycodeSelectionIndex>119</keycodeSelectionIndex>
+    <updatePivotPoint>false</updatePivotPoint>
+    <parentNewMesh>false</parentNewMesh>
+    <createPrefab>false</createPrefab>
+    <meshesPath>Assets/MeshCutter/Meshes/</meshesPath>
+    <prefabsPath>Assets/MeshCutter/Prefabs/</prefabsPath>
+    <selectedColorRed>0.9852941</selectedColorRed>
+    <selectedColorGreen>0</selectedColorGreen>
+    <selectedColorBlue>0</selectedColorBlue>
+    <pivotPointX>0</pivotPointX>
+    <pivotPointY>0</pivotPointY>
+    <pivotPointZ>0</pivotPointZ>
+  </settings>
+</Settings>
