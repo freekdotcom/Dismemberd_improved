@@ -14,7 +14,8 @@ public class Movement : MonoBehaviour
 	float rotationSpeed = 100f;
 	float timer = 2f;
 	public Vector3 windForce, rotationForc;
-    
+
+    public PlayerBooleanManager playerBooleanManager;
 
 	public bool hasLeftArmLower;
 	public bool hasRigthArmLower;
@@ -23,8 +24,8 @@ public class Movement : MonoBehaviour
 	public bool hasLeftUpperArm;
 	public bool hasRightUpperArm;
 	public bool hasLeftUpperLeg;
-    public bool hasRightUpperLeg;
-    public bool hasHead;
+    protected bool hasRightUpperLeg;
+    protected bool hasHead;
 	GameObject player;
     private bool grounded;
 	private bool canDie;

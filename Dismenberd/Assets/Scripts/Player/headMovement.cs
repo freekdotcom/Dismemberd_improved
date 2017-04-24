@@ -79,7 +79,7 @@ public class headMovement : MonoBehaviour {
 				Movement.headMovement = false;
 				transform.position += new Vector3(0 , 0.5f, 0);
 				move.hasHead = true;
-				move.AttachPart (Movement.SKELETONHEAD);
+				move.AttachPart (Movement.SKELETONHEAD, gameObject);
 				pickUpText.text = "";
 			}
 		}

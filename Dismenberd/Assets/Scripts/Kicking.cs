@@ -17,13 +17,11 @@ public class Kicking : MonoBehaviour {
 	void Update () {
 		if (triggered) {
 			if (Input.GetKeyDown (KeyCode.Q)) {
-				//Kick (kickStrength);
 				head.GetComponent<Rigidbody>().AddRelativeForce(new Vector3(0, 1, -1) * kickStrength);
 				Movement.headMovement = true;
 
 			}
 		}
-		//Debug.Log (triggered);
 	}
 
 	void OnTriggerEnter(Collider coll){
@@ -37,19 +35,4 @@ public class Kicking : MonoBehaviour {
 		triggered = false;
 		head = null;
 	}
-
-	/*void Kick(float kickStrength)
-	{
-		RaycastHit hit;
-		if(Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit))
-		{
-			if(hit.rigidbody != null)
-			{
-				hit.rigidbody.AddForceAtPosition(Camera.main.transform.forward * kickStrength, hit.point, ForceMode.Impulse);
-				thirdPersonOrbitCamera.camOffset = new Vector3(0f, 3f, -5f);
-			
-		}
-	}
-}
-*/
 }
