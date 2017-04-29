@@ -21,7 +21,7 @@ public class AnimationManager : MonoBehaviour {
 
 		
 		//mist beide onderarmen
-		if (movement.hasLeftArmLower || movement.hasRigthArmLower) {
+		if (movement.playerBooleanManager.hasLeftArmLower || movement.playerBooleanManager.hasRigthArmLower) {
 			throwing.canThrow = true;
 			movement.canPickUp = true;
 		} else {
@@ -43,7 +43,7 @@ public class AnimationManager : MonoBehaviour {
 			movement.speed =4f;
 		} 
 		//heeft 1 van zijn onderbenen niet
-		if ((!movement.hasLeftLowerLeg || !movement.hasRightLowerLeg) 
+		if ((!movement.playerBooleanManager.hasLeftLowerLeg || !movement.playerBooleanManager.hasRightLowerLeg) 
 			&& (Input.GetKey ("w") || Input.GetKey ("s") || Input.GetKey ("d") || Input.GetKey ("a"))) {
 				animator.SetBool ("Skipping", true);
 				movement.speed = 4f;
@@ -52,14 +52,15 @@ public class AnimationManager : MonoBehaviour {
 		}
 
 		//heeft linker of rechterbeen helemaal niet
-		if((!movement.hasLeftLowerLeg && !movement.hasLeftUpperLeg) || (!movement.hasRightLowerLeg && !movement.hasRightUpperLeg)){
+		if((!movement.playerBooleanManager.hasLeftLowerLeg && !movement.playerBooleanManager.hasLeftUpperLeg) 
+            || (!movement.playerBooleanManager.hasRightLowerLeg && !movement.playerBooleanManager.hasRightUpperLeg)){
 			animator.SetBool("Skipping", true);
 			animator.SetBool("Running", false);
 			animator.SetBool("Crawling", false);
 			movement.speed = 4f;
 		}
 		//heeft bovenbeen links en rechts en de rest niet
-		if (!movement.hasLeftLowerLeg && !movement.hasRightLowerLeg) {
+		if (!movement.playerBooleanManager.hasLeftLowerLeg && !movement.playerBooleanManager.hasRightLowerLeg) {
 			animator.SetBool ("Crawling", true);
 			animator.SetBool("Skipping", false);
 			animator.SetBool("Running", false);
@@ -67,7 +68,8 @@ public class AnimationManager : MonoBehaviour {
 		}
 
 		//heeft hele linkerbeen niet en onderbeen rechts niet
-		if(!movement.hasLeftLowerLeg && !movement.hasLeftUpperLeg && !movement.hasRightLowerLeg){
+		if(!movement.playerBooleanManager.hasLeftLowerLeg && 
+            !movement.playerBooleanManager.hasLeftUpperLeg && !movement.playerBooleanManager.hasRightLowerLeg){
 			animator.SetBool ("Crawling", true);
 			animator.SetBool("Skipping", false);
 			animator.SetBool("Running", false);
@@ -75,14 +77,18 @@ public class AnimationManager : MonoBehaviour {
 		}
 
 		//heeft rechterbeen niet en onderbeen links niet
-		if(!movement.hasRightLowerLeg && !movement.hasRightUpperLeg && !movement.hasLeftLowerLeg){
+		if(!movement.playerBooleanManager.hasRightLowerLeg && !movement.playerBooleanManager.hasRightUpperLeg && 
+            !movement.playerBooleanManager.hasLeftLowerLeg){
 			animator.SetBool ("Crawling", true);
 			animator.SetBool("Skipping", false);
 			animator.SetBool("Running", false);
 			movement.speed = 3f;
 		}
 		//heeft geen benen meer
-		if (!movement.hasRightLowerLeg && !movement.hasRightUpperLeg && !movement.hasLeftLowerLeg && !movement.hasLeftUpperLeg) {
+		if (!movement.playerBooleanManager.hasRightLowerLeg 
+            && !movement.playerBooleanManager.hasRightUpperLeg 
+            && !movement.playerBooleanManager.hasLeftLowerLeg 
+            && !movement.playerBooleanManager.hasLeftUpperLeg) {
 			animator.SetBool ("Crawling", true);
 			animator.SetBool("Skipping", false);
 			animator.SetBool("Running", false);

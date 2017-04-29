@@ -78,7 +78,7 @@ public class headMovement : MonoBehaviour {
 			if(Input.GetKey("e")){
 				Movement.headMovement = false;
 				transform.position += new Vector3(0 , 0.5f, 0);
-				move.hasHead = true;
+				move.playerBooleanManager.hasHead = true;
 				move.AttachPart (Movement.SKELETONHEAD, gameObject);
 				pickUpText.text = "";
 			}

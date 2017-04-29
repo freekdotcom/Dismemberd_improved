@@ -16,16 +16,6 @@ public class Movement : MonoBehaviour
 	public Vector3 windForce, rotationForc;
 
     public PlayerBooleanManager playerBooleanManager;
-
-	public bool hasLeftArmLower;
-	public bool hasRigthArmLower;
-	public bool hasLeftLowerLeg;
-	public bool hasRightLowerLeg;
-	public bool hasLeftUpperArm;
-	public bool hasRightUpperArm;
-	public bool hasLeftUpperLeg;
-    protected bool hasRightUpperLeg;
-    protected bool hasHead;
 	GameObject player;
     private bool grounded;
 	private bool canDie;
@@ -59,18 +49,20 @@ public class Movement : MonoBehaviour
 	// Use this for initialization
 	void Start ()
 	{
+	    playerBooleanManager = new PlayerBooleanManager();
+
 		canDie = false;
 		rb = GetComponent<Rigidbody> ();
 		animator = GetComponent<Animator> ();
-		hasLeftArmLower = true;
-		hasRigthArmLower = true;
-		hasLeftLowerLeg = true;
-		hasRightLowerLeg = true;
-		hasLeftUpperArm = true;
-		hasRightUpperArm = true;
-		hasLeftUpperLeg = true; 
-		hasRightUpperLeg = true;
-		hasHead = true;
+        playerBooleanManager.hasLeftArmLower = true;
+        playerBooleanManager.hasRigthArmLower = true;
+        playerBooleanManager.hasLeftLowerLeg = true;
+        playerBooleanManager.hasRightLowerLeg = true;
+        playerBooleanManager.hasLeftUpperArm = true;
+        playerBooleanManager.hasRightUpperArm = true;
+        playerBooleanManager.hasLeftUpperLeg = true;
+        playerBooleanManager.hasRightUpperLeg = true;
+        playerBooleanManager.hasHead = true;
 		
 		headMovement = false;
 		
@@ -95,7 +87,7 @@ public class Movement : MonoBehaviour
 			//rb.AddForce(transform.forward * -speed);
 			
 			//springen
-			if (Input.GetKeyDown ("space") && IsGrounded () && hasRightLowerLeg && hasLeftLowerLeg) {
+			if (Input.GetKeyDown ("space") && IsGrounded () && playerBooleanManager.hasRightLowerLeg && playerBooleanManager.hasLeftLowerLeg) {
 				rb.AddForce (transform.up * 400);
 				audio.PlayOneShot(jump, 0.5f);
 				grounded = false;
@@ -120,7 +112,7 @@ public class Movement : MonoBehaviour
 			}
 		}
 		
-		if (!hasRightLowerLeg && !hasLeftLowerLeg) {
+		if (!playerBooleanManager.hasRightLowerLeg && !playerBooleanManager.hasLeftLowerLeg) {
 			turner.transform.rotation = Quaternion.Euler (180f, Camera.main.transform.eulerAngles.y + 180f, 0f);
 			
 		} else {
@@ -128,50 +120,50 @@ public class Movement : MonoBehaviour
 		}
 		
 		//linkerarm
-		if (Input.GetKeyDown (KeyCode.UpArrow) && hasLeftArmLower) {
+		if (Input.GetKeyDown (KeyCode.UpArrow) && playerBooleanManager.hasLeftArmLower) {
 			DetachPart (LEFTLOWERARM);
-			hasLeftArmLower = false;   
-		} else if (Input.GetKeyDown (KeyCode.UpArrow) && !hasLeftArmLower && hasLeftUpperArm) {
-			hasLeftUpperArm = false;
+            playerBooleanManager.hasLeftArmLower = false;   
+		} else if (Input.GetKeyDown (KeyCode.UpArrow) && !playerBooleanManager.hasLeftArmLower && playerBooleanManager.hasLeftUpperArm) {
+            playerBooleanManager.hasLeftUpperArm = false;
 			DetachPart (LEFTUPPERARM);
 		}
 		
 		//rechterarm
-		if (Input.GetKeyDown (KeyCode.DownArrow) && hasRigthArmLower) {
+		if (Input.GetKeyDown (KeyCode.DownArrow) && playerBooleanManager.hasRigthArmLower) {
 			DetachPart (RIGHTLOWERARM);
-			hasRigthArmLower = false;
-		} else if (Input.GetKeyDown (KeyCode.DownArrow) && !hasRigthArmLower && hasRightUpperArm) {
-			hasRightUpperArm = false;
+            playerBooleanManager.hasRigthArmLower = false;
+		} else if (Input.GetKeyDown (KeyCode.DownArrow) && !playerBooleanManager.hasRigthArmLower && playerBooleanManager.hasRightUpperArm) {
+            playerBooleanManager.hasRightUpperArm = false;
 			DetachPart (RIGHTUPPERARM);
 		}
 		
 		//linkerbeen
-		if (Input.GetKeyDown (KeyCode.RightArrow) && hasLeftLowerLeg) {
+		if (Input.GetKeyDown (KeyCode.RightArrow) && playerBooleanManager.hasLeftLowerLeg) {
 			DetachPart (LEFTLOWERLEG);
-			hasLeftLowerLeg = false;
-		} else if (Input.GetKeyDown (KeyCode.RightArrow) && !hasLeftLowerLeg && hasLeftUpperLeg) {
-			hasLeftUpperLeg = false;
+            playerBooleanManager.hasLeftLowerLeg = false;
+		} else if (Input.GetKeyDown (KeyCode.RightArrow) && !playerBooleanManager.hasLeftLowerLeg && playerBooleanManager.hasLeftUpperLeg) {
+            playerBooleanManager.hasLeftUpperLeg = false;
 			DetachPart (LEFTUPPERLEG);
 		}
 		
 		//rechterbeen
-		if (Input.GetKeyDown (KeyCode.LeftArrow) && hasRightLowerLeg) {
+		if (Input.GetKeyDown (KeyCode.LeftArrow) && playerBooleanManager.hasRightLowerLeg) {
 			DetachPart (RIGHTLOWERLEG);
-			hasRightLowerLeg = false;
-		} else if (Input.GetKeyDown (KeyCode.LeftArrow) && !hasRightLowerLeg && hasRightUpperLeg) {
-			hasRightUpperLeg = false;
+            playerBooleanManager.hasRightLowerLeg = false;
+		} else if (Input.GetKeyDown (KeyCode.LeftArrow) && !playerBooleanManager.hasRightLowerLeg && playerBooleanManager.hasRightUpperLeg) {
+            playerBooleanManager.hasRightUpperLeg = false;
 			DetachPart (RIGHTUPPERLEG);
 		}
 		
 		//hoofd
-		if (Input.GetKeyDown (KeyCode.F) && hasHead) {
-			hasHead = false;
+		if (Input.GetKeyDown (KeyCode.F) && playerBooleanManager.hasHead) {
+            playerBooleanManager.hasHead = false;
 			DetachPart (SKELETONHEAD);
 			thirdPersonOrbitCamera.camOffset = new Vector3 (0f, 0f, -5f);
 		}
-		if (hasHead == true) {
-			thirdPersonOrbitCamera.camOffset = new Vector3 (0f, 3f, -10f);
-		} 
+		//if (playerBooleanManager.hasHead == true) {
+		//	thirdPersonOrbitCamera.camOffset = new Vector3 (0f, 3f, -10f);
+		//} 
 			
 	}
 	
@@ -242,14 +234,14 @@ public class Movement : MonoBehaviour
 			pickUpText.text = "Hold 'E' to pickup";
 			if (Input.GetKey ("e")) {
 				AttachPart (LEFTUPPERARM, coll.gameObject);
-				hasLeftUpperArm = true;
+                playerBooleanManager.hasLeftUpperArm = true;
 			}
 		}
 		
-		if (coll.gameObject.tag == "LeftLowerArm" && hasLeftUpperArm && canPickUp) {
+		if (coll.gameObject.tag == "LeftLowerArm" && playerBooleanManager.hasLeftUpperArm && canPickUp) {
 			pickUpText.text = "Hold 'E' to pickup";
 			if (Input.GetKey ("e")) {
-				hasLeftArmLower = true;
+                playerBooleanManager.hasLeftArmLower = true;
 				AttachPart (LEFTLOWERARM, coll.gameObject);	
 			}
 		}
@@ -257,15 +249,15 @@ public class Movement : MonoBehaviour
 		if (coll.gameObject.tag == "RightUpperArm" && canPickUp) {
 			pickUpText.text = "Hold 'E' to pickup";
 			if (Input.GetKey ("e")) {
-				hasRightUpperArm = true;
+                playerBooleanManager.hasRightUpperArm = true;
 				AttachPart (RIGHTUPPERARM, coll.gameObject);
 			}
 		}
 		
-		if (coll.gameObject.tag == "RightLowerArm" && hasRightUpperArm && canPickUp) {
+		if (coll.gameObject.tag == "RightLowerArm" && playerBooleanManager.hasRightUpperArm && canPickUp) {
 			pickUpText.text = "Hold 'E' to pickup";
 			if (Input.GetKey ("e")) {
-				hasRigthArmLower = true;
+                playerBooleanManager.hasRigthArmLower = true;
 				AttachPart (RIGHTLOWERARM, coll.gameObject);
 			}
 		}
@@ -274,16 +266,16 @@ public class Movement : MonoBehaviour
 			pickUpText.text = "Hold 'E' to pickup";
 			if (Input.GetKey ("e")) {
 				transform.position += new Vector3 (0, 1.5f, 0);
-				hasLeftUpperLeg = true;
+                playerBooleanManager.hasLeftUpperLeg = true;
 				AttachPart (LEFTUPPERLEG, coll.gameObject);
 			}
 		}
 		
-		if (coll.gameObject.tag == "LeftLowerLeg" && hasLeftUpperLeg && canPickUp) {
+		if (coll.gameObject.tag == "LeftLowerLeg" && playerBooleanManager.hasLeftUpperLeg && canPickUp) {
 			pickUpText.text = "Hold 'E' to pickup";
 			if (Input.GetKey ("e")) {
 				transform.position += new Vector3 (0, 1.5f, 0);
-				hasLeftLowerLeg = true;
+                playerBooleanManager.hasLeftLowerLeg = true;
 				AttachPart (LEFTLOWERLEG, coll.gameObject);
 			}
 		}
@@ -292,16 +284,16 @@ public class Movement : MonoBehaviour
 			pickUpText.text = "Hold 'E' to pickup";
 			if (Input.GetKey ("e")) {
 				transform.position += new Vector3 (0, 1.5f, 0);
-				hasRightUpperLeg = true;
+                playerBooleanManager.hasRightUpperLeg = true;
 				AttachPart (RIGHTUPPERLEG, coll.gameObject);
 			}
 		}
 		
-		if (coll.gameObject.tag == "RightLowerLeg" && hasRightUpperLeg && canPickUp) {
+		if (coll.gameObject.tag == "RightLowerLeg" && playerBooleanManager.hasRightUpperLeg && canPickUp) {
 			pickUpText.text = "Hold 'E' to pickup";
 			if (Input.GetKey ("e")) {
 				transform.position += new Vector3 (0, 1.5f, 0);
-				hasRightLowerLeg = true;
+                playerBooleanManager.hasRightLowerLeg = true;
 				AttachPart (RIGHTLOWERLEG, coll.gameObject);
 			}
 		}
@@ -314,7 +306,7 @@ public class Movement : MonoBehaviour
 			if (Input.GetKey ("e")) {
 				headMovement = false;
 				transform.position += new Vector3 (0, 0.5f, 0);
-				hasHead = true;
+                playerBooleanManager.hasHead = true;
 				AttachPart (SKELETONHEAD, coll.gameObject);
 			}
 		}
@@ -323,34 +315,36 @@ public class Movement : MonoBehaviour
 			touchDoor = true;
 		}
 	}
-	
+
+    void GUIHelper(bool bodyPart, string firstPart, string secondPart, int firstQuater,
+        int secondQuarter, int thirdQuarter, int fourthQuarter)
+    {
+        if (bodyPart)
+        {
+            GUI.TextArea(new Rect(firstQuater, secondQuarter, 
+                thirdQuarter, fourthQuarter), firstPart);
+        }
+        else
+        {
+            GUI.TextArea(new Rect(firstQuater, secondQuarter, 
+                thirdQuarter, fourthQuarter), secondPart);
+        }
+    }
+
 	void OnGUI ()
 	{
-		
-		//controls text
-		if (hasLeftArmLower) {
-			GUI.TextArea (new Rect (100, 35, 95, 25), "LowerLeftArm");
-		} else {
-			GUI.TextArea (new Rect (100, 35, 95, 25), "UpperLeftArm");
-		}
-		
-		if (hasRightLowerLeg) {
-			GUI.TextArea (new Rect (35, 65, 95, 25), "LowerLeftLeg");
-		} else {
-			GUI.TextArea (new Rect (35, 65, 95, 25), "UpperLeftLeg");
-		}
-		
-		if (hasLeftLowerLeg) {
-			GUI.TextArea (new Rect (175, 65, 95, 25), "LowerRightLeg");
-		} else {
-			GUI.TextArea (new Rect (175, 65, 95, 25), "UpperRightLeg");
-		}
-		
-		if (hasRigthArmLower) {
-			GUI.TextArea (new Rect (100, 95, 95, 25), "LowerRightArm");
-		} else {
-			GUI.TextArea (new Rect (100, 95, 95, 25), "UpperRightArm");
-		}
+	
+        GUIHelper(playerBooleanManager.hasLeftArmLower, "LowerLeftArm", "UpperLeftArm",
+            100, 35, 95, 25);
+
+        GUIHelper(playerBooleanManager.hasRightLowerLeg, "LowerLeftLeg", "UpperLeftLeg",
+            35, 65, 95, 25);
+
+        GUIHelper(playerBooleanManager.hasRightLowerLeg, "LowerRightLeg", "UpperRightLeg",
+            175, 65, 95, 25);
+
+        GUIHelper(playerBooleanManager.hasRightLowerLeg, "LowerRightArm", "UpperRightArm",
+            100, 95, 95, 25);
 		
 		GUI.DrawTexture (new Rect (135, 10, 25, 25), up);
 		GUI.DrawTexture (new Rect (10, 65, 25, 25), left);
