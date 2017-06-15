@@ -1,0 +1,1 @@
+IterateRule("CreateEntrance") ExecuteRule("AddRoom", 5) IterateRule("AddFinalRoom") ExecuteRule("DetermineRoomType")

@@ -1,0 +1,6 @@
+version: 0.6f
+start: STRING 0:Start
+rule: CreateEntrance = STRING 0:Start > {0 = STRING 1:entrance(x=-202, y=-184) 0:Start}
+rule: AddRoom = STRING 0:Start > {0 = STRING 0:Room 2:finalizeRoom(x=-81, y=-197) 3:Start(x=-10, y=-204)}
+rule: AddFinalRoom = STRING 0:Room 1:finalizeRoom(x=-120, y=-212) 2:Start(x=-64, y=-197) > {0 = STRING 7:key(x=-196, y=-182) 2:finalizeRoom(x=-75, y=-206) 3:finalRoom(x=7, y=-212) 4:lock(x=20, y=-162) 6:finalizeRoom(x=163, y=-208)}
+rule: DetermineRoomType = STRING 0:Room > {0 = STRING 1:room(x=-114, y=-213) 2:bone(x=33, y=-213)} | {1 = STRING 1:room(x=-114, y=-213)}

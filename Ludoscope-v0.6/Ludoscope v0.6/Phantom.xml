@@ -1,0 +1,2214 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Phantom</name>
+    </assembly>
+    <members>
+        <member name="F:Phantom.Assets.PhantomAssets.White">
+            <summary>
+            A simple 1x1 white pixel.
+            </summary>
+        </member>
+        <member name="F:Phantom.Assets.PhantomAssets.Sans16">
+            <summary>
+            A plain sans font 16 pixels in height.
+            </summary>
+        </member>
+        <member name="F:Phantom.Assets.PhantomAssets.Courier20Bold">
+            <summary>
+            Courier New, Bold, 20 pixels in height.
+            </summary>
+        </member>
+        <member name="T:Phantom.Core.Component">
+            <summary>
+            The Component class is the heart of the Phantom engine. It follows a lean implementation
+            of the composite pattern where all components are also composites. Almost all main classes
+            in Phantom are derived from Component (inlcuding Entity, Layer, and GameState), which
+            means that all these classes can be nested as components.
+            </summary>
+        </member>
+        <member name="F:Phantom.Core.Component.Ghost">
+            <summary>
+            The Ghost flag marks components that are not active, but are not destroyed either. 
+            Ghost components will not be updated and are not intergrated if they are part of 
+            and physics integrator.
+            </summary>
+        </member>
+        <member name="F:Phantom.Core.Component.Properties">
+            <summary>
+            The PropertyCollection of a component contains an arbitrary set of values stored in
+            dictionaries. Properties can be used to pass information between components without
+            building direct references. For normal Components the PropertyCollection is null. Only
+            Entities will always instanteate a collection in its constructor.
+            </summary>
+        </member>
+        <member name="M:Phantom.Core.Component.#ctor">
+            <summary>
+            The default constructor generates a new Components and sets its flags to 0.
+            </summary>
+        </member>
+        <member name="M:Phantom.Core.Component.Dispose">
+            <summary>
+            Clear the component from memory and clean up any references
+            </summary>
+        </member>
+        <member name="M:Phantom.Core.Component.OnAdd(Phantom.Core.Component)">
+            <summary>
+            Function called after this Component is added to a parent Component.
+            </summary>
+            <param name="parent"></param>
+        </member>
+        <member name="M:Phantom.Core.Component.OnAncestryChanged">
+            <summary>
+            Function called in response to any changes in its ancestors; when any of its parent or parent's parents calls OnAdd
+            </summary>
+        </member>
+        <member name="M:Phantom.Core.Component.OnRemove">
+            <summary>
+            Function called when this Component is removed from its parent.
+            </summary>
+        </member>
+        <member name="M:Phantom.Core.Component.OnComponentAdded(Phantom.Core.Component)">
+            <summary>
+            Function called when a child component is added to this component
+            </summary>
+            <param name="child"></param>
+        </member>
+        <member name="M:Phantom.Core.Component.OnComponentRemoved(Phantom.Core.Component)">
+            <summary>
+            Function called when a child is removed from this component.
+            </summary>
+            <param name="child"></param>
+        </member>
+        <member name="M:Phantom.Core.Component.AddComponent(Phantom.Core.Component)">
+            <summary>
+            Call this function to add a child component to this component. This function
+            calls the OnAdd of the child, the OnAncestryChanged of the child and all its
+            children, and the OnComponentAdded of this component.
+            </summary>
+            <param name="child"></param>
+        </member>
+        <member name="M:Phantom.Core.Component.InsertComponent(System.Int32,Phantom.Core.Component)">
+            <summary>
+            Call this function to insert a child component to this component at a specific location. 
+            This function calls the OnAdd of the child, the OnAncestryChanged of the child and all its
+            children, and the OnComponentAdded of this component.
+            </summary>
+            <param name="index">Zero based index, when the index is 0 the child is inserted as the first of this components children</param>
+            <param name="child"></param>
+        </member>
+        <member name="M:Phantom.Core.Component.InsertBeforeComponent(Phantom.Core.Component,Phantom.Core.Component)">
+            <summary>
+            Call this function to insert a child component to this component before a specific component. 
+            This function calls the OnAdd of the child, the OnAncestryChanged of the child and all its
+            children, and the OnComponentAdded of this component.
+            </summary>
+            <param name="other">A existing child of the component, the new child is added before this component</param>
+            <param name="child"></param>
+        </member>
+        <member name="M:Phantom.Core.Component.RemoveComponent(Phantom.Core.Component)">
+            <summary>
+            Call this function to remove a component a child from this component. This function calls
+            the OnRemove of the child and the OnComponentRemoved of this component.
+            </summary>
+            <param name="child"></param>
+        </member>
+        <member name="M:Phantom.Core.Component.ClearComponents">
+            <summary>
+            Removes all children from this component, starting with the last child.
+            </summary>
+        </member>
+        <member name="M:Phantom.Core.Component.HandleMessage(Phantom.Core.Message)">
+            <summary>
+            HandleMessage is the prefered way of communication between components. The public HandleMessage method is used to send message to a component and the
+            protected HandleMessage is the method that is called through out the tree of this component. This traversing will stop when the .Consume() method is called
+            on the Message object.
+            </summary>
+            <param name="message">The message object.</param>
+        </member>
+        <member name="M:Phantom.Core.Component.HandleMessage(System.Int32,System.Object,System.Object)">
+            <summary>
+            HandleMessage is the prefered way of communication between components. The public HandleMessage method is used to send message to a component and the
+            protected HandleMessage is the method that is called through out the tree of this component. This traversing will stop when the .Consume() method is called
+            on the Message object.
+            </summary>
+            <param name="type">Int representing the message. The Phantom Messages class contains standard messages, you are advised to create a list for messages for your projects</param>
+            <param name="data">The data passed along to the message.</param>
+            <param name="result">The possible initial state of the message's result value.</param>
+            <returns>Returns a Message object. Containing the state of the message and the possible result.</returns>
+        </member>
+        <member name="M:Phantom.Core.Component.HandleMessage(System.Int32,System.Object)">
+            <summary>
+            HandleMessage is the prefered way of communication between components. The public HandleMessage method is used to send message to a component and the
+            protected HandleMessage is the method that is called through out the tree of this component. This traversing will stop when the .Consume() method is called
+            on the Message object.
+            </summary>
+            <param name="type">Int representing the message. The Phantom Messages class contains standard messages, you are advised to create a list for messages for your projects</param>
+            <param name="data">The data passed along to the message.</param>
+            <returns>Returns a Message object. Containing the state of the message and the possible result.</returns>
+        </member>
+        <member name="M:Phantom.Core.Component.HandleMessage(System.Int32)">
+            <summary>
+            HandleMessage is the prefered way of communication between components. The public HandleMessage method is used to send message to a component and the
+            protected HandleMessage is the method that is called through out the tree of this component. This traversing will stop when the .Consume() method is called
+            on the Message object.
+            </summary>
+            <param name="type">Int representing the message. The Phantom Messages class contains standard messages, you are advised to create a list for messages for your projects</param>
+            <param name="data">The data passed along to the message.</param>
+            <returns>Returns a Message object. Containing the state of the message and the possible result.</returns>
+        </member>
+        <member name="M:Phantom.Core.Component.Update(System.Single)">
+            <summary>
+            The generic Update method is called once every frame. Override this method to implement behavior that needs to be updated every frame.
+            </summary>
+            <param name="elapsed">The time between the current frame and the previous frame, measured in seconds.</param>
+        </member>
+        <member name="M:Phantom.Core.Component.Integrate(System.Single)">
+            <summary>
+            The generic Integrate method that is called by a physics integrator a specified number of times per frame. Override this method
+            to implement physics behavior.
+            </summary>
+            <param name="elapsed">The simulated time between the this integration call and the previous call, measured in seconds.</param>
+        </member>
+        <member name="M:Phantom.Core.Component.CanCollideWith(Phantom.Core.Entity)">
+            <summary>
+            Check to see if the entity this component is part of can physically collide with another entity. Return true by default. 
+            If any of the components contained by each Entity returns false, the entities cannot collide.
+            </summary>
+            <param name="other"></param>
+            <returns>If any of the components contained by each Entity returns false, the entities cannot collide.</returns>
+        </member>
+        <member name="M:Phantom.Core.Component.AfterCollisionWith(Phantom.Core.Entity,Phantom.Physics.CollisionData)">
+            <summary>
+            Override this method to respond to collisions between this component's entity and another entity.
+            </summary>
+            <param name="other"></param>
+            <param name="collision"></param>
+        </member>
+        <member name="M:Phantom.Core.Component.Render(Phantom.Graphics.RenderInfo)">
+            <summary>
+            A components and its children are rendered by this method. Render is called when a component is part 
+            of a RenderLayer or an EntityLayer.
+            </summary>
+            <param name="info"></param>
+        </member>
+        <member name="M:Phantom.Core.Component.GetProperty(System.String,System.Object@)">
+            <summary>
+            DEPRICATED
+            </summary>
+            <param name="name"></param>
+            <param name="result"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Phantom.Core.Component.GetBoolean(System.String,System.Boolean@)">
+            <summary>
+            DEPRICATED
+            </summary>
+            <param name="name"></param>
+            <param name="result"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Phantom.Core.Component.GetFloat(System.String,System.Single@)">
+            <summary>
+            DEPRICATED
+            </summary>
+            <param name="name"></param>
+            <param name="result"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Phantom.Core.Component.GetString(System.String,System.String@)">
+            <summary>
+            DEPRICATED
+            </summary>
+            <param name="name"></param>
+            <param name="result"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Phantom.Core.Component.RemoveAllComponentsByType``1">
+            <summary>
+            Remove all child components by type.
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:Phantom.Core.Component.GetAllComponentsByType``1">
+            <summary>
+            Get a list of all the component's children that match a certain type.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:Phantom.Core.Component.GetComponentByType``1(System.Int32)">
+            <summary>
+            Find and return a child component by its type. 
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="nth">A zero based index of the match to return (0 returns the first child of type T, 1 the second, and so on).</param>
+            <returns></returns>
+        </member>
+        <member name="M:Phantom.Core.Component.GetComponentByType``1">
+            <summary>
+            Find and return the first child component of type T. 
+            </summary>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:Phantom.Core.Component.GetAncestor``1">
+            <summary>
+            Find and return the first ancestor of type T
+            </summary>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="P:Phantom.Core.Component.Flags">
+            <summary>
+            A uint that can be used to store arbitrary values. It has no fixed purpose but can
+            be used to represent type information. For example an Entity with flag 1 is the player,
+            while 2 idicates enemies, and so on.
+            </summary>
+        </member>
+        <member name="P:Phantom.Core.Component.Destroyed">
+            <summary>
+            Set the Destroyed flag to true to signal the parent of this component to remove this
+            component at the next opportunity.
+            </summary>
+        </member>
+        <member name="P:Phantom.Core.Component.Components">
+            <summary>
+            A collection of Components that are nested within this Component. Use AddComponent to
+            add components to this list, and RemoveComponent to remove them from the list. You
+            can also remove Components by setting their Destroyed flag to true.
+            </summary>
+        </member>
+        <member name="P:Phantom.Core.Component.Parent">
+            <summary>
+            The Component's parent indicates in which Component this Component is set.
+            </summary>
+        </member>
+        <member name="T:Phantom.Cameras.Components.FixedTarget">
+            <summary>
+            HAs the camera focus on a specifi point
+            </summary>
+        </member>
+        <member name="T:Phantom.Core.Content">
+            <summary>
+            TODO: Document here and on wiki.
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:Phantom.Core.Content.RegisterSizeAffix(System.Int32,System.Boolean)" -->
+        <member name="M:Phantom.Core.Content.SelectMatchingSizeAffix">
+            <summary>
+            Selects the content size affix best matching the running game's size.
+            This will apply to all contexts.
+            </summary>
+        </member>
+        <member name="M:Phantom.Core.Content.Register(System.String,System.String)">
+            <summary>
+            Register an asset as content to be preloaded within a specific context.
+            </summary>
+            <param name="contextName">The context in which the asset should be loaded.</param>
+            <param name="assetName">The asset name, without the .xnb extension.</param>
+            <returns>this</returns>
+        </member>
+        <member name="M:Phantom.Core.Content.Register(System.String)">
+            <summary>
+            Register an asset as content to be preloaded within the default context.
+            </summary>
+            <param name="assetName">The asset name, without the .xnb extension.</param>
+            <returns>this</returns>
+        </member>
+        <member name="M:Phantom.Core.Content.SwitchContext(System.String,System.Boolean)">
+            <summary>
+            Make a content context switch, unloading any previous content and preloading assets for the given contextName.
+            </summary>
+            <param name="contextName">The name of the context to preload.</param>
+            <param name="unload">Whether or not to unload previous contexts.</param>
+        </member>
+        <member name="M:Phantom.Core.Content.SwitchContext(System.String)">
+            <summary>
+            Make a content context switch, unloading any previous content and preloading assets for the given contextName.
+            </summary>
+            <param name="contextName">The name of the context to preload.</param>
+        </member>
+        <member name="M:Phantom.Core.Content.ActivateContexts(System.String[])">
+            <summary>
+            Activating multiple contexts unloading any before.
+            </summary>
+            <param name="contextNames">List of context names to preload.</param>
+        </member>
+        <member name="M:Phantom.Core.Content.Load``1(System.String)">
+            <summary>
+            Loads an asset that has been processed by the Content Pipeline.
+            </summary>
+            <typeparam name="T">The type of asset to load. Model, Effect, SpriteFont, Texture, Texture2D, and TextureCube are all supported by default by the standard Content Pipeline processor, but additional types may be loaded by extending the processor.</typeparam>
+            <param name="assetName">Asset name, relative to the loader root directory, and not including the .xnb extension.</param>
+            <returns>The loaded asset. Repeated calls to load the same asset will return the same object instance.</returns>
+        </member>
+        <member name="M:Phantom.Core.Content.LoadAffixed``1(System.String)">
+            <summary>
+            Handles the actual call to <c>ContentManager.Load</c>, adding a content size affix if set.
+            </summary>
+            <typeparam name="T">The type of asset to load. Model, Effect, SpriteFont, Texture, Texture2D, and TextureCube are all supported by default by the standard Content Pipeline processor, but additional types may be loaded by extending the processor.</typeparam>
+            <returns>The loaded asset. Repeated calls to load the same asset will return the same object instance.</returns>
+            <param name="assetName">Asset name, relative to the loader root directory, and not including size affixes or file extension.</param>
+        </member>
+        <member name="T:Phantom.Core.Entity">
+            <summary>
+            The Entity class represents components that have a physical representation in the game world. 
+            It is designed to implement collision handling and movement.
+            </summary>
+        </member>
+        <member name="F:Phantom.Core.Entity.nextID">
+            <summary>
+            Counter to generate unique id's for each entity
+            </summary>
+        </member>
+        <member name="F:Phantom.Core.Entity.ID">
+            <summary>
+            A unique ID that is assigned to the entity when it is created.
+            </summary>
+        </member>
+        <member name="F:Phantom.Core.Entity.Position">
+            <summary>
+            The entity's current position in the game world
+            </summary>
+        </member>
+        <member name="F:Phantom.Core.Entity.Orientation">
+            <summary>
+            The entity's current orientation (angle) in the game world, measured in radials.
+            </summary>
+        </member>
+        <member name="F:Phantom.Core.Entity.UpdateBehaviour">
+            <summary>
+            This field specifies when the entity is updated. Always, onscreen or never.
+            </summary>
+        </member>
+        <member name="F:Phantom.Core.Entity.InitiateCollision">
+            <summary>
+            Flag that indicates if the Entity initiate collision checks. Defaults to true. When set to false
+            the entity may still collide, but will not collide with other entities whose InitiateCollision flags
+            are also false. This is best used for static entities (such as walls and tiles) that do not move, and only
+            collide with moving entities.
+            </summary>
+        </member>
+        <member name="F:Phantom.Core.Entity.Collidable">
+            <summary>
+            Flag that indicates if the entity responds physically to collisions. Defaults to true. If set to false collisions are
+            registered but the position and velocity of the entities are unaffected
+            TODO: Consider renaming
+            </summary>
+        </member>
+        <member name="F:Phantom.Core.Entity.SortValue">
+            <summary>
+            Value used for depth sorting. 
+            </summary>
+        </member>
+        <member name="F:Phantom.Core.Entity.CalculatedSortValue">
+            <summary>
+            Calculated value used for depth sorting. 
+            </summary>
+        </member>
+        <member name="M:Phantom.Core.Entity.#ctor(Microsoft.Xna.Framework.Vector2,System.Single)">
+            <summary>
+            Create an entity (it still needs to be added to an EntityLayer)
+            </summary>
+            <param name="position"></param>
+            <param name="mass"></param>
+        </member>
+        <member name="M:Phantom.Core.Entity.#ctor(Microsoft.Xna.Framework.Vector2)">
+            <summary>
+            Creates an entity with mass 1 (it still needs to be added to an EntityLayer).
+            </summary>
+            <param name="position"></param>
+        </member>
+        <member name="P:Phantom.Core.Entity.Direction">
+            <summary>
+            A normalized vector representing the orientation of an entity where orientaton 0 is represented by the vector (1, 0).
+            </summary>
+        </member>
+        <member name="P:Phantom.Core.Entity.Mass">
+            <summary>
+            The entity's relative mass. Default value is 1.
+            </summary>
+        </member>
+        <member name="P:Phantom.Core.Entity.Mover">
+            <summary>
+            A direct reference to the last Mover Component added to the Entity. If an antity has no mover, it is considered to be 
+            static and behaves differently in collision. An entity can only have one mover.
+            </summary>
+        </member>
+        <member name="P:Phantom.Core.Entity.Shape">
+            <summary>
+            A direct reference to the last Shape Component added to the Entity. An entity can only have one shape (but that shape 
+            can be a CompoundShape).
+            </summary>
+        </member>
+        <member name="F:Phantom.Core.Entity.UpdateBehaviours.Default">
+            <summary>
+            AlwaysUpdate
+            </summary>
+        </member>
+        <member name="T:Phantom.Core.EntityComponent">
+            <summary>
+            A specilaized component that maintains a direct reference to an Entity is its direct parent or a more distant ancestor.
+            </summary>
+        </member>
+        <member name="P:Phantom.Core.EntityComponent.Entity">
+            <summary>
+            A direct reference to the Entity this EntityComponent is part of. Either its direct parent or a more distant ancestor.
+            </summary>
+        </member>
+        <member name="T:Phantom.Core.EntityLayer">
+            <summary>
+            A layer designed to render and integrate a set of entitities. 
+            </summary>
+        </member>
+        <member name="T:Phantom.Core.Layer">
+            <summary>
+            GameStates can consist of different layer, each with their own dimensions
+            </summary>
+        </member>
+        <member name="M:Phantom.Core.Layer.#ctor(System.Single,System.Single)">
+            <summary>
+            Creates a layer with the specified dimensions.
+            </summary>
+            <param name="width">The layer's width measured in pixels</param>
+            <param name="height">The layer's height measured in pixels</param>
+        </member>
+        <member name="M:Phantom.Core.Layer.#ctor">
+            <summary>
+            Creates a layer that has the same size as the game's width and height.
+            </summary>
+        </member>
+        <member name="P:Phantom.Core.Layer.Camera">
+            <summary>
+            A direct reference to the GameState's camera.
+            </summary>
+        </member>
+        <member name="P:Phantom.Core.Layer.Bounds">
+            <summary>
+            the layers dimensions.
+            </summary>
+        </member>
+        <member name="F:Phantom.Core.EntityLayer.renderer">
+            <summary>
+            The component that renders the layer's entities. 
+            </summary>
+        </member>
+        <member name="F:Phantom.Core.EntityLayer.integrator">
+            <summary>
+            The component that handles the layer's entities' physics. All entity added to an EntityLayer are also automatically added to the integrator's entity list.
+            </summary>
+        </member>
+        <member name="M:Phantom.Core.EntityLayer.#ctor(System.Single,System.Single,Phantom.Graphics.Renderer,Phantom.Physics.Integrator)">
+            <summary>
+            Creates an entityLayer of the specified dimensions.
+            </summary>
+            <param name="width">The layers width in pixels</param>
+            <param name="height">The layers height in pixels</param>
+            <param name="renderer">A renderer component responsible for rendering the entities in this layer.</param>
+            <param name="integrator">A integrator component responsible for handling the entities physics.</param>
+        </member>
+        <member name="M:Phantom.Core.EntityLayer.#ctor(Phantom.Graphics.Renderer,Phantom.Physics.Integrator)">
+            <summary>
+            Creates an entityLayer wich dimensions match the game's width and height.
+            </summary>
+            <param name="renderer">A renderer component responsible for rendering the entities in this layer.</param>
+            <param name="integrator">A integrator component responsible for handling the entities physics.</param>
+        </member>
+        <member name="M:Phantom.Core.EntityLayer.ClearComponents">
+            <summary>
+            Clears all components, but retains the original renderer and integrator.
+            </summary>
+        </member>
+        <member name="M:Phantom.Core.EntityLayer.GetEntities">
+            <summary>
+            Returns an array with all entities.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Phantom.Core.EntityLayer.GetEntityAt(Microsoft.Xna.Framework.Vector2)">
+            <summary>
+            Returns the first entity that was found at the specified location
+            </summary>
+            <param name="position"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Phantom.Core.EntityLayer.GetEntitiesAt(Microsoft.Xna.Framework.Vector2)">
+            <summary>
+            Returns a list of all entities that were found at the specified location
+            </summary>
+            <param name="position"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Phantom.Core.EntityLayer.GetEntityCloseTo(Microsoft.Xna.Framework.Vector2,System.Single)">
+            <summary>
+            Returns the first entity that is at or closer than the specified distance to the specified location.
+            </summary>
+            <param name="position"></param>
+            <param name="distance"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Phantom.Core.EntityLayer.RemoveGhosts">
+            <summary>
+            Remove all components that are marked as Ghosts.
+            </summary>
+        </member>
+        <member name="T:Phantom.Core.GameState">
+            <summary>
+            GameStates are the main components that make up a game. The PhantomGame instance maintains a stack of GameStates, 
+            the top most GameState is the one that is currently active.
+            </summary>
+        </member>
+        <member name="P:Phantom.Core.GameState.Transparent">
+            <summary>
+            If a GameState is transparent the gameState below this one will also be rendered.
+            </summary>
+        </member>
+        <member name="P:Phantom.Core.GameState.Propagate">
+            <summary>
+            Set Propagate to true to allow the gameState below this one to apply updates and update physics.
+            </summary>
+        </member>
+        <member name="P:Phantom.Core.GameState.OnlyOnTop">
+            <summary>
+            Set OnlyOnTop to true to prevent this GameState from being rendered or updated when it is not the top state.
+            </summary>
+        </member>
+        <member name="P:Phantom.Core.GameState.Input">
+            <summary>
+            DEPRICATED
+            </summary>
+        </member>
+        <member name="P:Phantom.Core.GameState.Camera">
+            <summary>
+            A direct reference to a Camera Component. A GameState can only have one Camera, if you add a new camera to the gamestate the previous camera is removed.
+            </summary>
+        </member>
+        <member name="T:Phantom.Core.Input">
+            <summary>
+            DECRICATED!
+            </summary>
+        </member>
+        <member name="T:Phantom.Core.InputComponent">
+            <summary>
+            DEPRICATED!
+            </summary>
+        </member>
+        <member name="M:Phantom.Core.Message.#ctor">
+            <summary>
+            Use: Message.Create()
+            </summary>
+        </member>
+        <member name="M:Phantom.Core.Message.Handle">
+            <summary>
+            Mark this message as handled.
+            </summary>
+        </member>
+        <member name="M:Phantom.Core.Message.Consume">
+            <summary>
+            Mark this message as consumed and handled.
+            </summary>
+        </member>
+        <member name="M:Phantom.Core.Message.Is``1(System.Int32,``0@)">
+            <summary>
+            A quick method to test this message type and data-type.
+            <br/>
+            <pre>
+              Vector2 pos;
+              if( message.Is&lt;Vector2&gt;(Messages.CameraJumpTo, out pos) ) {
+                Debug.WriteLine("JumpTo: " + pos);
+              }
+            </pre>
+            </summary>
+            <typeparam name="T">The type the Data must be.</typeparam>
+            <param name="message">The message type to check.</param>
+            <param name="data">The out var for the data cast.</param>
+            <returns>Wether or not the message is valid.</returns>
+        </member>
+        <member name="M:Phantom.Core.Message.Recycle">
+            <summary>
+            Please use Recycle when you're done with a Message object!
+            </summary>
+        </member>
+        <member name="T:Phantom.Core.Mover">
+            <summary>
+            A mover component controls an Entity's movement. Adding a mover to an Entity means it will respond to
+            collisions.
+            </summary>
+        </member>
+        <member name="F:Phantom.Core.Mover.Velocity">
+            <summary>
+            A vector representing the entity's velocity measured in pixels/second
+            </summary>
+        </member>
+        <member name="F:Phantom.Core.Mover.Acceleration">
+            <summary>
+            A vector representing the entity's accelartion measured in pixels/second^2
+            </summary>
+        </member>
+        <member name="F:Phantom.Core.Mover.Force">
+            <summary>
+            A vector representing a force which is applied to the velocity once. This vector is cleared after each integration
+            </summary>
+        </member>
+        <member name="F:Phantom.Core.Mover.Damping">
+            <summary>
+            Loss of energy every integration step (V = V * damping ^ elapsedTime)
+            TODO: Joris doesn't like this setting (its not intuitive enough: reevaluate)
+            </summary>
+        </member>
+        <member name="F:Phantom.Core.Mover.Friction">
+            <summary>
+            Bounce friction (0-1). 1 is maximal friction (0% reflection in the direction of the collision surface)
+            </summary>
+        </member>
+        <member name="F:Phantom.Core.Mover.Bounce">
+            <summary>
+            Bounce restitution (0-1). 1 is maximal bounce (100% reflection in the direction of the collision normal)
+            </summary>
+        </member>
+        <member name="M:Phantom.Core.Mover.RespondToCollision(Phantom.Physics.CollisionData,Phantom.Core.Entity,System.Single)">
+            <summary>
+            Responds to the collision by resolving the interpenetration.
+            </summary>
+            <param name="collision"></param>
+            <param name="other"></param>
+            <param name="factor"></param>
+        </member>
+        <member name="M:Phantom.Core.Mover.BounceEnergy(Phantom.Physics.CollisionData,Phantom.Core.Entity,System.Single)">
+            <summary>
+            Simulates bouncing of static entities by reflecting the entity's velocity along the collision normal.
+            Applies bounce and and friction.
+            </summary>
+            <param name="collision"></param>
+            <param name="other"></param>
+            <param name="factor"></param>
+        </member>
+        <member name="M:Phantom.Core.Mover.TransferEnergy(Phantom.Physics.CollisionData,Phantom.Core.Entity)">
+            <summary>
+            Simulates energy transfer between two moving entities, based on their respective mass
+            </summary>
+            <param name="collision"></param>
+            <param name="other"></param>
+        </member>
+        <member name="M:Phantom.Core.Mover.TransferImpuls(Microsoft.Xna.Framework.Vector2)">
+            <summary>
+            Created an extra function to override particular behavior (such as ignore in a certainn directon)
+            </summary>
+            <param name="impuls"></param>
+        </member>
+        <member name="M:Phantom.Core.Mover.ApplyFrictionBounce(Microsoft.Xna.Framework.Vector2,System.Single,System.Single)">
+            <summary>
+            Apply bounce and friction (see http://www.metanetsoftware.com/technique/tutorialA.html section --= Bounce and Friction =-- ).
+            </summary>
+            <param name="friction"></param>
+            <param name="bounce"></param>
+        </member>
+        <member name="T:Phantom.Core.PropertyCollection">
+            <summary>
+            A propertyCollection contains a set of arbirary variables associated with a component. 
+            It facilitates indirect communication between components.
+            </summary>
+        </member>
+        <member name="M:Phantom.Core.PropertyCollection.GetInt(System.String,System.Int32)">
+            <summary>
+            Retrieves an int value from the internal dictionary, if the value or the dictionary does not exist, it returns the default value instead.
+            </summary>
+            <param name="name"></param>
+            <param name="defaultValue"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Phantom.Core.PropertyCollection.SetInt(System.String,System.Int32)">
+            <summary>
+            Sets an int value in the internal dictionary.
+            </summary>
+            <param name="name"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:Phantom.Core.PropertyCollection.GetBoolean(System.String,System.Boolean)">
+            <summary>
+            Retrieves an bool value from the internal dictionary, if the value or the dictionary does not exist, it returns the default value instead.
+            </summary>
+            <param name="name"></param>
+            <param name="defaultValue"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Phantom.Core.PropertyCollection.SetBoolean(System.String,System.Boolean)">
+            <summary>
+            Sets a bool value in the internal dictionary.
+            </summary>
+            <param name="name"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:Phantom.Core.PropertyCollection.GetFloat(System.String,System.Single)">
+            <summary>
+            Retrieves a float value from the internal dictionary, if the value or the dictionary does not exist, it returns the default value instead.
+            </summary>
+            <param name="name"></param>
+            <param name="defaultValue"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Phantom.Core.PropertyCollection.SetFloat(System.String,System.Single)">
+            <summary>
+            Sets a float value in the internal dictionary.
+            </summary>
+            <param name="name"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:Phantom.Core.PropertyCollection.GetObject(System.String,System.Object)">
+            <summary>
+            Retrieves an object from the internal dictionary, if the value or the dictionary does not exist, it returns the default value instead.
+            </summary>
+            <param name="name"></param>
+            <param name="defaultValue"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Phantom.Core.PropertyCollection.SetObject(System.String,System.Object)">
+            <summary>
+            Sets a object value in the internal dictionary.
+            </summary>
+            <param name="name"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:Phantom.Core.PropertyCollection.GetString(System.String,System.String)">
+            <summary>
+            Retrieves a string value from the internal dictionary, if the value or the dictionary does not exist, it returns the default value instead.
+            </summary>
+            <param name="name"></param>
+            <param name="defaultValue"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Phantom.Core.PropertyCollection.SetString(System.String,System.String)">
+            <summary>
+            Sets a string value in the internal dictionary.
+            </summary>
+            <param name="name"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:Phantom.Core.PropertyCollection.GetColor(System.String,Microsoft.Xna.Framework.Color)">
+            <summary>
+            Retrieves a color value from the internal dictionary, if the value or the dictionary does not exist, it returns the default value instead.
+            </summary>
+            <param name="name"></param>
+            <param name="defaultValue"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Phantom.Core.PropertyCollection.SetColor(System.String,Microsoft.Xna.Framework.Color)">
+            <summary>
+            Sets a color value in the internal dictionary.
+            </summary>
+            <param name="name"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:Phantom.Core.PropertyCollection.Merge(Phantom.Core.PropertyCollection)">
+            <summary>
+            Merge all properties of an other collection into this one.
+            See: PhantomUtils.MergeLeft
+            </summary>
+            <param name="p"></param>
+        </member>
+        <member name="P:Phantom.Core.PropertyCollection.Ints">
+            <summary>
+            A dictionary containing integer values. It is better to get access to the SetInt and GetInt methods.
+            TODO: Consider making the entiry dictionary private. Now a dictionary is created even if you are only looking up values that might not even exist.
+            </summary>
+        </member>
+        <member name="P:Phantom.Core.PropertyCollection.Floats">
+            <summary>
+            A dictionary containing float values. It is better to get access to the SetFloat and GetFloat methods.
+            TODO: Consider making the entiry dictionary private. Now a dictionary is created even if you are only looking up values that might not even exist.
+            </summary>
+        </member>
+        <member name="P:Phantom.Core.PropertyCollection.Objects">
+            <summary>
+            A dictionary containing objects. It is better to get access to the SetObject and GetObject methods, or to use the typed equivalents.
+            TODO: Consider making the entiry dictionary private. Now a dictionary is created even if you are only looking up values that might not even exist.
+            </summary>
+        </member>
+        <member name="T:Phantom.Core.RenderLayer">
+            <summary>
+            A special layer type that contains a renderer component which will render the other components in this layer.
+            </summary>
+        </member>
+        <member name="M:Phantom.Core.RenderLayer.#ctor(System.Single,System.Single,Phantom.Graphics.Renderer)">
+            <summary>
+            Creates a renderLayer of a specified size.
+            </summary>
+            <param name="width">The width of the layer measured in pixels</param>
+            <param name="height">The height of the layer measured in pixels</param>
+            <param name="renderer">A renderer component that is responsible for rendering all other components in this layer.</param>
+        </member>
+        <member name="M:Phantom.Core.RenderLayer.#ctor(Phantom.Graphics.Renderer)">
+            <summary>
+            Creates a renderlayer with the same width and height as the game's width and height.
+            </summary>
+            <param name="renderer">A renderer component that is responsible for rendering all other components in this layer.</param>
+        </member>
+        <member name="M:Phantom.Core.RenderLayer.ClearComponents">
+            <summary>
+            Clears all component but retrieves the renderer component.
+            </summary>
+        </member>
+        <member name="T:Phantom.GameUI.Elements.Button">
+            <summary>
+            A simple menu button that can be clicked to throw MenuClicked messages in the menu.
+            It renders a simple button if the menu's renderer has a canvas.
+            </summary>
+        </member>
+        <member name="T:Phantom.GameUI.Elements.UIElement">
+            <summary>
+            The base class from which all MenuControls are derived. It implements
+            basic behavior and sets up a few simple methods that can be overridden
+            to create new types of controls.
+            </summary>
+        </member>
+        <member name="F:Phantom.GameUI.Elements.UIElement.Name">
+            <summary>
+            The name of the control can be used to identify it in the menu
+            </summary>
+        </member>
+        <member name="F:Phantom.GameUI.Elements.UIElement.Focus">
+            <summary>
+            Flag if the element has the current input focus
+            </summary>
+        </member>
+        <member name="F:Phantom.GameUI.Elements.UIElement.Selected">
+            <summary>
+            A bit flag indicating which players have currently selected the control
+            </summary>
+        </member>
+        <member name="F:Phantom.GameUI.Elements.UIElement.Enabled">
+            <summary>
+            A flag indicating the control is active
+            </summary>
+        </member>
+        <member name="F:Phantom.GameUI.Elements.UIElement.Visible">
+            <summary>
+            Flag indicating the control should be rendered
+            </summary>
+        </member>
+        <member name="F:Phantom.GameUI.Elements.UIElement.Tweening">
+            <summary>
+            Flag indicating whether control is currently tweening (and therefore cannot be used at the same time)
+            </summary>
+        </member>
+        <member name="F:Phantom.GameUI.Elements.UIElement.pressed">
+            <summary>
+            A bit flag indicating which players are currently pressing the control
+            </summary>
+        </member>
+        <member name="F:Phantom.GameUI.Elements.UIElement.layer">
+            <summary>
+            A reference to the menu the control is part of
+            </summary>
+        </member>
+        <member name="F:Phantom.GameUI.Elements.UIElement.Left">
+            <summary>
+            The control's left neighbor
+            </summary>
+        </member>
+        <member name="F:Phantom.GameUI.Elements.UIElement.Right">
+            <summary>
+            The control's right neighbor
+            </summary>
+        </member>
+        <member name="F:Phantom.GameUI.Elements.UIElement.Above">
+            <summary>
+            The control's above neighbor
+            </summary>
+        </member>
+        <member name="F:Phantom.GameUI.Elements.UIElement.Below">
+            <summary>
+            The control's below neighbor
+            </summary>
+        </member>
+        <member name="F:Phantom.GameUI.Elements.UIElement.PlayerMask">
+            <summary>
+            A bit flag indicating which players can use the control.
+            </summary>
+        </member>
+        <member name="F:Phantom.GameUI.Elements.UIElement.selectSpeed">
+            <summary>
+            The speed at which the currentSelected flat goes to 1 when selected. The default is 4 which means it will fade in in 1/4 seconds.
+            </summary>
+        </member>
+        <member name="F:Phantom.GameUI.Elements.UIElement.deselectSpeed">
+            <summary>
+            The speed at which the currentSelected flat goes to 0 when not selected. The default is 4 which means it will fade out in 1/4 seconds.
+            </summary>
+        </member>
+        <member name="F:Phantom.GameUI.Elements.UIElement.currentSelected">
+            <summary>
+            A value between 0 and 1 that fades in or out when the control is selected or not selected. Can be used to fade in glows, colors, etc.
+            </summary>
+        </member>
+        <member name="F:Phantom.GameUI.Elements.UIElement.ToolTipText">
+            <summary>
+            Set this string to add a tool tip to the element.
+            </summary>
+        </member>
+        <member name="M:Phantom.GameUI.Elements.UIElement.#ctor(System.String,Microsoft.Xna.Framework.Vector2,Phantom.Shapes.Shape)">
+            <summary>
+            Base constructor needs a name, position and shape.
+            </summary>
+            <param name="name"></param>
+            <param name="position"></param>
+            <param name="shape"></param>
+        </member>
+        <member name="M:Phantom.GameUI.Elements.UIElement.StartPress(System.Int32)">
+            <summary>
+            A player starts pressing the control
+            </summary>
+            <param name="player"></param>
+        </member>
+        <member name="M:Phantom.GameUI.Elements.UIElement.EndPress(System.Int32)">
+            <summary>
+            A player releases the control, this will generate a select click (if the control was also pressed)
+            </summary>
+            <param name="player"></param>
+        </member>
+        <member name="M:Phantom.GameUI.Elements.UIElement.CancelPress(System.Int32)">
+            <summary>
+            Resets the pressed without generating a click
+            </summary>
+            <param name="player"></param>
+        </member>
+        <member name="M:Phantom.GameUI.Elements.UIElement.ClickAt(Microsoft.Xna.Framework.Vector2,Phantom.GameUI.Elements.UIMouseButton)">
+            <summary>
+            Override this function to implement behavior to respond to mouse and touch clicks at a specific location
+            </summary>
+            <param name="position"></param>
+            <param name="player"></param>
+            <param name="button"></param>
+        </member>
+        <member name="M:Phantom.GameUI.Elements.UIElement.CanUse(System.Int32)">
+            <summary>
+            Quick check if the control can be used by a player (must be enabled, visible, not tweening and the playerMask must fit)
+            </summary>
+            <param name="player"></param>
+            <returns></returns>
+        </member>
+        <member name="F:Phantom.GameUI.Elements.Button.Caption">
+            <summary>
+            The buttons visible caption
+            </summary>
+        </member>
+        <member name="M:Phantom.GameUI.Elements.Button.Render(Phantom.Graphics.RenderInfo)">
+            <summary>
+            A simple visualization rendered to the menu's renderer's canvas. But only when the menu's static font has been set
+            </summary>
+            <param name="info"></param>
+        </member>
+        <member name="T:Phantom.GameUI.Elements.EditBox">
+            <summary>
+            A simple menu button that can be clicked to throw MenuClicked messages in the menu.
+            It renders a simple button if the menu's renderer has a canvas.
+            </summary>
+        </member>
+        <member name="F:Phantom.GameUI.Elements.EditBox.Text">
+            <summary>
+            The buttons visible caption
+            </summary>
+        </member>
+        <member name="M:Phantom.GameUI.Elements.EditBox.Render(Phantom.Graphics.RenderInfo)">
+            <summary>
+            A simple visualization rendered to the menu's renderer's canvas. But only when the menu's static font has been set
+            </summary>
+            <param name="info"></param>
+        </member>
+        <member name="T:Phantom.GameUI.Elements.OptionButton">
+            <summary>
+            A simple menu button that can be clicked to change between a number of options.
+            If the state changes it passes a MenuOptionChanged message to the menu.
+            If controlled by keyboard or gamepad and in a menu that is not ordered in two-dimensions
+            the direction keys or sticks can be used to cycle through the options.
+            </summary>
+        </member>
+        <member name="F:Phantom.GameUI.Elements.OptionButton.options">
+            <summary>
+            A string containg the options
+            </summary>
+        </member>
+        <member name="M:Phantom.GameUI.Elements.OptionButton.#ctor(System.String,System.String,Microsoft.Xna.Framework.Vector2,Phantom.Shapes.Shape,Phantom.GameUI.Elements.UIAction,System.Boolean,System.Int32,System.String[])">
+            <summary>
+            Creates a menu option button
+            </summary>
+            <param name="name"></param>
+            <param name="caption"></param>
+            <param name="position"></param>
+            <param name="shape"></param>
+            <param name="wrap">Indicates whether the options cycle</param>
+            <param name="selectedOption"></param>
+            <param name="options"></param>
+        </member>
+        <member name="P:Phantom.GameUI.Elements.OptionButton.Option">
+            <summary>
+            Sets or returns the current option
+            </summary>
+        </member>
+        <member name="T:Phantom.GameUI.Elements.Slider">
+            <summary>
+            A menu slider control which can be used to control float values or lists of options.
+            If the state changes it passes a MenuOptionChanged message to the menu.
+            Sliders must have a rectangular shape (OABB).
+            </summary>
+        </member>
+        <member name="F:Phantom.GameUI.Elements.Slider.HandleWidth">
+            <summary>
+            The default width for the sliders handle. Used to determine the visual range in which the slider can be moved
+            </summary>
+        </member>
+        <member name="F:Phantom.GameUI.Elements.Slider.HandleHeight">
+            <summary>
+            The default height for the sliders handle. Used to determine the visual range in which the slider can be moved
+            </summary>
+        </member>
+        <member name="F:Phantom.GameUI.Elements.Slider.Caption">
+            <summary>
+            The sliders caption
+            </summary>
+        </member>
+        <member name="M:Phantom.GameUI.Elements.Slider.#ctor(System.String,System.String,Microsoft.Xna.Framework.Vector2,Phantom.Shapes.OABB,System.Single,System.Single,System.Single,Phantom.GameUI.Elements.UIAction,Phantom.GameUI.Elements.Slider.SliderOrientation,System.String[])">
+            <summary>
+            Creates a slider with a numbe of fixed options that correspond to different floating scale values
+            </summary>
+            <param name="name"></param>
+            <param name="caption"></param>
+            <param name="position"></param>
+            <param name="shape"></param>
+            <param name="minValue"></param>
+            <param name="maxValue"></param>
+            <param name="currentValue"></param>
+            <param name="sliderOientation"></param>
+            <param name="options">The preset options</param>
+        </member>
+        <member name="M:Phantom.GameUI.Elements.Slider.#ctor(System.String,System.String,Microsoft.Xna.Framework.Vector2,Phantom.Shapes.OABB,System.Int32,Phantom.GameUI.Elements.UIAction,Phantom.GameUI.Elements.Slider.SliderOrientation,System.String[])">
+            <summary>
+            Creates a slider with a numbe of fixed options.
+            </summary>
+            <param name="name"></param>
+            <param name="caption"></param>
+            <param name="position"></param>
+            <param name="shape"></param>
+            <param name="currentOption"></param>
+            <param name="orientation"></param>
+            <param name="options"></param>
+        </member>
+        <member name="M:Phantom.GameUI.Elements.Slider.#ctor(System.String,System.String,Microsoft.Xna.Framework.Vector2,Phantom.Shapes.OABB,System.Single,System.Single,System.Single,System.Single,Phantom.GameUI.Elements.UIAction,Phantom.GameUI.Elements.Slider.SliderOrientation,System.Boolean)">
+            <summary>
+            Creates a value slider
+            </summary>
+            <param name="name"></param>
+            <param name="caption"></param>
+            <param name="position"></param>
+            <param name="shape"></param>
+            <param name="minValue"></param>
+            <param name="maxValue"></param>
+            <param name="currentValue"></param>
+            <param name="step"></param>
+            <param name="orientation"></param>
+            <param name="snap">The value always snaps to the indicated steps</param>
+        </member>
+        <member name="M:Phantom.GameUI.Elements.Slider.Render(Phantom.Graphics.RenderInfo)">
+            <summary>
+            A simple rendering routine for the slider
+            </summary>
+            <param name="info"></param>
+        </member>
+        <member name="T:Phantom.GameUI.Elements.Slider.SliderOrientation">
+            <summary>
+            Orientation options for the sliders.
+            </summary>
+        </member>
+        <member name="T:Phantom.GameUI.Elements.ToggleButton">
+            <summary>
+            A simple button with two states that toggle when clicked. 
+            If the state changes it passes a MenuOptionChanged message to the menu.
+            </summary>
+        </member>
+        <member name="F:Phantom.GameUI.Elements.ToggleButton.options">
+            <summary>
+            An array containg the names of the two options
+            </summary>
+        </member>
+        <member name="P:Phantom.GameUI.Elements.ToggleButton.Option">
+            <summary>
+            Gets or sets the option which must be 0 or 1
+            </summary>
+        </member>
+        <member name="M:Phantom.GameUI.Elements.ToolButton.Render(Phantom.Graphics.RenderInfo)">
+            <summary>
+            A simple visualization rendered to the menu's renderer's canvas. But only when the menu's static font has been set
+            </summary>
+            <param name="info"></param>
+        </member>
+        <member name="T:Phantom.GameUI.Handlers.BaseInputHandler">
+            <summary>
+            The base class from which different input handlers are derived
+            </summary>
+        </member>
+        <member name="F:Phantom.GameUI.Handlers.BaseInputHandler.layer">
+            <summary>
+            A reference to the menu
+            </summary>
+        </member>
+        <member name="T:Phantom.GameUI.Elements.Container">
+            <summary>
+            A Menu Control that can hold MenuContainerContent instances. Useful for inventory or draggable options
+            </summary>
+        </member>
+        <member name="F:Phantom.GameUI.Elements.Container.Caption">
+            <summary>
+            The control's visible caption
+            </summary>
+        </member>
+        <member name="F:Phantom.GameUI.Elements.Container.content">
+            <summary>
+            The container's current content
+            </summary>
+        </member>
+        <member name="M:Phantom.GameUI.Elements.Container.Render(Phantom.Graphics.RenderInfo)">
+            <summary>
+            A simple visualization rendered to the menu's renderer's canvas. But only when the menu's static font has been set
+            </summary>
+            <param name="info"></param>
+        </member>
+        <member name="M:Phantom.GameUI.Elements.Container.CanAccept(Phantom.GameUI.Elements.ContainerItem)">
+            <summary>
+            Return false if a MenuContainerContent cannot be docked at the container
+            </summary>
+            <param name="content"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Phantom.GameUI.Elements.ContainerItem">
+            <summary>
+            A draggable object that can be moved between to MenuContainers
+            </summary>
+        </member>
+        <member name="F:Phantom.GameUI.Elements.ContainerItem.MoveSpeed">
+            <summary>
+            The default move speed between locations
+            </summary>
+        </member>
+        <member name="F:Phantom.GameUI.Elements.ContainerItem.MoveTween">
+            <summary>
+            The tween function used to tween between locations
+            </summary>
+        </member>
+        <member name="F:Phantom.GameUI.Elements.ContainerItem.Caption">
+            <summary>
+            The ContainerContents visible caption
+            </summary>
+        </member>
+        <member name="F:Phantom.GameUI.Elements.ContainerItem.targetContainer">
+            <summary>
+            The target of location (used for auto moves)
+            </summary>
+        </member>
+        <member name="F:Phantom.GameUI.Elements.ContainerItem.moveOrigin">
+            <summary>
+            The departure point of an auto move
+            </summary>
+        </member>
+        <member name="F:Phantom.GameUI.Elements.ContainerItem.tween">
+            <summary>
+            Current tween value
+            </summary>
+        </member>
+        <member name="F:Phantom.GameUI.Elements.ContainerItem.StackSize">
+            <summary>
+            The maximum content items of the same type in a single stack
+            </summary>
+        </member>
+        <member name="F:Phantom.GameUI.Elements.ContainerItem.Count">
+            <summary>
+            The current count of content items on this stack
+            </summary>
+        </member>
+        <member name="F:Phantom.GameUI.Elements.ContainerItem.CanFloat">
+            <summary>
+            Flag that indicates if the content can float (be dragged to a position that is not a container)
+            </summary>
+        </member>
+        <member name="M:Phantom.GameUI.Elements.ContainerItem.Render(Phantom.Graphics.RenderInfo)">
+            <summary>
+            A simple visualization rendered to the menu's renderer's canvas. But only when the menu's static font has been set
+            </summary>
+            <param name="info"></param>
+        </member>
+        <member name="M:Phantom.GameUI.Elements.ContainerItem.Undock">
+            <summary>
+            Call undock to start dragging/moving a content
+            </summary>
+        </member>
+        <member name="M:Phantom.GameUI.Elements.ContainerItem.Dock(Phantom.GameUI.Elements.Container)">
+            <summary>
+            Dock the content at a container
+            </summary>
+            <param name="container"></param>
+        </member>
+        <member name="M:Phantom.GameUI.Elements.ContainerItem.MoveTo(Phantom.GameUI.Elements.Container)">
+            <summary>
+            Move the content to a specific target container
+            </summary>
+            <param name="container"></param>
+        </member>
+        <member name="M:Phantom.GameUI.Elements.ContainerItem.MoveTo(Microsoft.Xna.Framework.Vector2)">
+            <summary>
+            Move the content to a specific target position
+            </summary>
+            <param name="position"></param>
+        </member>
+        <member name="M:Phantom.GameUI.Elements.ContainerItem.DropAt(Microsoft.Xna.Framework.Vector2)">
+            <summary>
+            Drop the content at a specific location
+            </summary>
+            <param name="position"></param>
+        </member>
+        <member name="M:Phantom.GameUI.Elements.ContainerItem.CanDockAt(Phantom.GameUI.Elements.Container)">
+            <summary>
+            SImple check if an item can dock at a particular container
+            </summary>
+            <param name="container"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Phantom.GameUI.Elements.ContainerItem.StackSizeChanged">
+            <summary>
+            Override this function if you want to react to changes in stack size
+            </summary>
+        </member>
+        <member name="P:Phantom.GameUI.Elements.ContainerItem.LastContainer">
+            <summary>
+            The component's last location (used for dragging)
+            </summary>
+        </member>
+        <member name="P:Phantom.GameUI.Elements.ContainerItem.Container">
+            <summary>
+            The component's current location
+            </summary>
+        </member>
+        <member name="P:Phantom.GameUI.Elements.ContainerItem.State">
+            <summary>
+            The Content's state
+            </summary>
+        </member>
+        <member name="T:Phantom.GameUI.Utils.UIDesigner">
+            <summary>
+            A component that allows you to drag menu controls and report on their current location when added to a menu.
+            In debug mode, typing edit_menu into the console will automatically add the MenuDesigner to the menu
+            </summary>
+        </member>
+        <member name="T:Phantom.GameUI.Handlers.GamePadHandler">
+            <summary>
+            Implements the control for a GamePad. The DPad and sticks can be used to move the 
+            selected control, or change values of sliders and optio buttons.
+            The A button is used to click buttons. Back calls the menu Back method
+            </summary>
+        </member>
+        <member name="T:Phantom.GameUI.Handlers.KeyboardHandler">
+            <summary>
+            Implements the control for keyboard. The arrow keys can be used to move the 
+            selected control, or change values of sliders and optio buttons.
+            The space bar or enter key is used to click buttons. Escape calls the menu Back method.
+            </summary>
+        </member>
+        <member name="T:Phantom.GameUI.Handlers.KeyboardShortCuts">
+            <summary>
+            Implements only keyboard shortcuts. The arrow keys can be used to move the 
+            selected control, or change values of sliders and optio buttons.
+            The space bar or enter key is used to click buttons. Escape calls the menu Back method.
+            </summary>
+        </member>
+        <member name="T:Phantom.GameUI.UILayer">
+             <summary>
+             A Menu layer implements basic functionality to keep track of menu controls.
+             The constructor takes a renderer to visualize components added to the menu.
+             By adding MenuControls components or instances from derived classes the menu
+             is populated. By adding MenuInput components the menu can be controlled by
+             several input devices.
+             
+             The menu class implements the methods ConnectControls and WrapControls to
+             automatically connect controls based on the menu's ordering and the controls'
+             relative positions. These methods should be called it the menu is to be
+             controlled by keyboard or gamepad.
+             
+             To use the basic menu simply add a Menu instance to a gamestate, and add controls 
+             and input handlers to it. For example a menu controlled by keyboard or mouse  
+             might look something like this:
+             
+             *** insert example here ***
+            
+             To respond to the controls. Respond to the MenuClicked and MenuOptionChanged messages 
+             that pass the source control as its data parameter. The messages are passed to the game 
+             state.
+             </summary>
+        </member>
+        <member name="F:Phantom.GameUI.UILayer.Font">
+            <summary>
+            A font used by the default renderers of the MenuControls
+            </summary>
+        </member>
+        <member name="F:Phantom.GameUI.UILayer.Controls">
+            <summary>
+            All the controls added to the menu.
+            </summary>
+        </member>
+        <member name="M:Phantom.GameUI.UILayer.#ctor(Phantom.Graphics.Renderer,System.Int32)">
+            <summary>
+            Creates a menu class
+            </summary>
+            <param name="renderer">The renderer component that is responsible for rendering the controlss</param>
+            <param name="maxPlayers">The number of players that can control the menu simultaneously</param>
+        </member>
+        <member name="M:Phantom.GameUI.UILayer.ClearComponents">
+            <summary>
+            Clears all components but retains the renderer
+            </summary>
+        </member>
+        <member name="M:Phantom.GameUI.UILayer.SetSelected(System.Int32,Phantom.GameUI.Elements.UIElement)">
+            <summary>
+            Set the selected control for a controlling player
+            </summary>
+            <param name="player"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:Phantom.GameUI.UILayer.GetSelected(System.Int32)">
+            <summary>
+            Get the selected control for a controlling player
+            </summary>
+            <param name="player"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Phantom.GameUI.UILayer.Back">
+            <summary>
+            Override to implement back behavior
+            </summary>
+        </member>
+        <member name="M:Phantom.GameUI.UILayer.ConnectControls(Phantom.GameUI.UILayer.Ordering)">
+            <summary>
+            Connect all controls based on a ordering and their relative positions
+            </summary>
+            <param name="ordering"></param>
+        </member>
+        <member name="M:Phantom.GameUI.UILayer.ConnectControls(Phantom.GameUI.UILayer.Ordering,System.Single)">
+            <summary>
+            Connect all controls based on a ordering and their relative positions
+            </summary>
+            <param name="ordering"></param>
+            <param name="maxDistance">Max distance for controls to be connected (distance betwene their positions, not their shapes)</param>
+        </member>
+        <member name="M:Phantom.GameUI.UILayer.WrapControls(Phantom.GameUI.UILayer.Ordering)">
+            <summary>
+            Wrap controls after they have been connected. Connects the first to the last control
+            </summary>
+            <param name="ordering"></param>
+        </member>
+        <member name="M:Phantom.GameUI.UILayer.GetControlAt(Microsoft.Xna.Framework.Vector2,Phantom.GameUI.Elements.UIElement)">
+            <summary>
+            Find the last control at a specific position
+            </summary>
+            <param name="position"></param>
+            <param name="exclude">This control is excluded from the search</param>
+            <returns></returns>
+        </member>
+        <member name="M:Phantom.GameUI.UILayer.GetControlAt(Microsoft.Xna.Framework.Vector2)">
+            <summary>
+            Find the last control at a specific position
+            </summary>
+            <param name="position"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Phantom.GameUI.UILayer.GetFirstControl(System.Int32)">
+            <summary>
+            Returns the first control that can be used by a player
+            </summary>
+            <param name="player"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Phantom.GameUI.UILayer.Ordering">
+            <summary>
+            Menu ordering determines how controls are linked.
+            </summary>
+        </member>
+        <member name="T:Phantom.GameUI.Handlers.MouseHandler">
+            <summary>
+            Implements mouse input for menu controls. 
+            </summary>
+        </member>
+        <member name="T:Phantom.GameUI.Handlers.TouchHandler">
+            <summary>
+            Implements mouse input for menu controls. 
+            </summary>
+        </member>
+        <member name="T:Phantom.Graphics.Canvas">
+            <summary>
+            A Canvas class that can draw graphic premitives
+            </summary>
+        </member>
+        <member name="F:Phantom.Graphics.Canvas.LineWidth">
+            <summary>
+            The stroke width (in pixels)
+            TODO: Rename to StrokeWidth
+            </summary>
+        </member>
+        <member name="F:Phantom.Graphics.Canvas.StrokeColor">
+            <summary>
+            The current stroke color
+            </summary>
+        </member>
+        <member name="F:Phantom.Graphics.Canvas.FillColor">
+            <summary>
+            Teh current fill color
+            </summary>
+        </member>
+        <member name="M:Phantom.Graphics.Canvas.FillRect(Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2,System.Single)">
+            <summary>
+            Draws and fills a rectangle specified by its orgin, half-size and orientation angle
+            </summary>
+            <param name="position">World position in pixels</param>
+            <param name="halfSize">Half size in pixels</param>
+            <param name="angle">Angle in radials</param>
+        </member>
+        <member name="M:Phantom.Graphics.Canvas.FillCircle(Microsoft.Xna.Framework.Vector2,System.Single)">
+            <summary>
+            Draws and fills a circle specified by its origin and radius
+            </summary>
+            <param name="position"></param>
+            <param name="radius"></param>
+        </member>
+        <member name="M:Phantom.Graphics.Canvas.StrokeLine(Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2)">
+            <summary>
+            Draw a line from position a to b
+            </summary>
+            <param name="a">A world position in pixels</param>
+            <param name="b">A world position in pixels</param>
+        </member>
+        <member name="M:Phantom.Graphics.Canvas.StrokeRect(Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2,System.Single)">
+            <summary>
+            Draws the outline of a rectangle specified by its orgin, half-size and orientation angle
+            </summary>
+            <param name="position">World position in pixels</param>
+            <param name="halfSize">Half size in pixels</param>
+            <param name="angle">Angle in radials</param>
+        </member>
+        <member name="M:Phantom.Graphics.Canvas.StrokeCircle(Microsoft.Xna.Framework.Vector2,System.Single)">
+            <summary>
+            Draws the outline of a circle specified by its origin and radius
+            </summary>
+            <param name="position"></param>
+            <param name="radius"></param>
+        </member>
+        <member name="T:Phantom.Graphics.EntityRenderer">
+            <summary>
+            Modification to the normal renderer that only renders 
+            </summary>
+        </member>
+        <member name="T:Phantom.Graphics.Renderer">
+            <summary>
+            The Renderer class renders all other components in its parent component.
+            </summary>
+        </member>
+        <member name="M:Phantom.Graphics.Sprite.#ctor(Microsoft.Xna.Framework.Graphics.Texture2D,System.Int32,System.Int32,System.Single,System.Single,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Load a texture and cut it into frames.
+            </summary>
+            <param name="texture">The texture to load</param>
+            <param name="width">Width of one frame</param>
+            <param name="height">Height of one frame</param>
+            <param name="centerX">Center of each frame (default middle)</param>
+            <param name="centerY">Center of each frame (default center)</param>
+            <param name="offsetX">X offset within the entire texture</param>
+            <param name="offsetY">Y offset within the entire texture</param>
+            <param name="spacing">Number of pixel between each frame (default 0)</param>
+        </member>
+        <member name="T:Phantom.Misc.Konsoul.KonsoulTraceListener">
+            Needed to receive debug output. (from `Debug.WriteLine' etc)
+        </member>
+        <member name="M:Phantom.Misc.PhantomUtils.AStar``1(``0,``0,System.Func{``0,``0[]},System.Func{``0,``0,System.Single},System.Func{``0,``0,System.Single})">
+            <summary>
+            A* search algorithm, calculates the shortest path in a weighted graph of nodes from start to end node using a monotonic (consistent) heuristic
+            </summary>
+            <typeparam name="T">The node objects</typeparam>
+            <param name="start">The starting node</param>
+            <param name="goal">The goal node</param>
+            <param name="travelableNeighbors">A function that returns all neighbors that are available (e.g. not blocked and traversable) from a given node</param>
+            <param name="heuristic">A function thet returns the estimated distance from any node to another - this should always be a lower value than the actual distance</param>
+            <param name="neighborDistance">A function that returns the distance (travel cost) between two given nodes</param>
+            <returns>The shortest (lowest cost) path from start to goal, or null if no such path exists</returns>
+        </member>
+        <member name="M:Phantom.Misc.PhantomUtils.GetIntersection(Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2@)">
+            <summary>
+            Find an interstection point between two line segments defined by their start and end points.
+            A vector for the interestionPoint needs to be passed to the function. It returns true if 
+            an intersection exists, false if otherwise.
+            </summary>
+            <param name="start1"></param>
+            <param name="end1"></param>
+            <param name="start2"></param>
+            <param name="end2"></param>
+            <param name="intersectionPoint"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Phantom.Misc.PhantomUtils.HasIntersection(Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2)">
+            <summary>
+            Checks if two line segments intersect.
+            </summary>
+            <param name="start1"></param>
+            <param name="end1"></param>
+            <param name="start2"></param>
+            <param name="end2"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Phantom.Misc.PhantomUtils.ClosestPointOnLine(Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2)">
+            <summary>
+            Finds the closest point on a linesegment to a specified point.
+            </summary>
+            <param name="lineStart"></param>
+            <param name="lineEnd"></param>
+            <param name="point"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Phantom.Misc.PhantomUtils.AngleDifference(System.Single,System.Single)">
+            <summary>
+            Returns a normalized difference between two angles a and b (normalize between -Pi and +Pi) where the difference is b - a.
+            </summary>
+            <param name="a">An angle measured in radials</param>
+            <param name="b">An angle measured in radials</param>
+            <returns>b-a in radials and normalized between-PI and +PI</returns>
+        </member>
+        <member name="M:Phantom.Misc.PhantomUtils.SafeNormalize(Microsoft.Xna.Framework.Vector2)">
+            <summary>
+            Normalize a vector only if the length isn't zero. This makes sure a division by zero doesn't occure.
+            
+            FIXME: This doens't seem to work...
+            </summary>
+            <param name="v">The vector to normalize.</param>
+        </member>
+        <member name="M:Phantom.Misc.PhantomUtils.NextFloat(System.Random)">
+            <summary>
+            Returns a random float value between 0.0 and 1.0 
+            </summary>
+            <param name="random"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Phantom.Misc.PhantomUtils.NextVector2(System.Random)">
+            <summary>
+            Returns a vector of length 1 with a random direction
+            </summary>
+            <param name="random"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Phantom.Misc.PhantomUtils.Choice``1(``0[])">
+            <summary>
+            Uses PhantomGame.Randy to select a random value from the parameters
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="a"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Phantom.Misc.PhantomUtils.FindOverlap(System.String,System.String)">
+            <summary>
+            Returns the longest possible substring both strings start with
+            </summary>
+            <param name="a"></param>
+            <param name="b"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Phantom.Misc.PhantomUtils.MergeLeft``3(``0,System.Collections.Generic.IDictionary{``1,``2}[])">
+            <summary>
+            Returns a new dictionary of this ... others merged leftward.
+            Keeps the type of 'this', which must be default-instantiable.
+            </summary>
+            <exmaple>
+            result = map.MergeLeft(other1, other2, ...)
+            </exmaple>
+            <typeparam name="T"></typeparam>
+            <typeparam name="K"></typeparam>
+            <typeparam name="V"></typeparam>
+            <param name="me"></param>
+            <param name="others"></param>
+        </member>
+        <member name="M:Phantom.Misc.PhantomUtils.GetHashCode(System.String)">
+            <summary>
+            Generate a hashcode for a string, using the alorithm Java uses. This because different 
+            platforms generated different hashes (Mono vs .NET).
+            
+            See: http://docs.oracle.com/javase/6/docs/api/java/lang/String.html#hashCode() (yes, in a C# project)
+            </summary>
+            <param name="input">input string</param>
+            <returns>hashCode of given string (0 if string is empty)</returns>
+        </member>
+        <member name="F:Microsoft.Xna.Framework.Input.Touch.TouchLocation._id">
+             <summary>
+            Attributes 
+             </summary>
+        </member>
+        <member name="F:Microsoft.Xna.Framework.Input.Touch.TouchLocation.Invalid">
+            <summary>
+            Helper for assigning an invalid touch location.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Xna.Framework.Input.Touch.TouchLocation.AsMovedState">
+            <summary>
+            Returns a copy of the touch with the state changed to moved.
+            </summary>
+            <returns>The new touch location.</returns>
+        </member>
+        <member name="M:Microsoft.Xna.Framework.Input.Touch.TouchLocation.UpdateState(Microsoft.Xna.Framework.Input.Touch.TouchLocation)">
+            <summary>
+            Updates the touch location using the new event.
+            </summary>
+            <param name="touchEvent">The next event for this touch location.</param>
+        </member>
+        <member name="M:Phantom.Misc.Triangulator.Triangulate(Microsoft.Xna.Framework.Vector2[])">
+            <summary>
+            Triangulates a 2D polygon produced the indexes required to render the points as a triangle list.
+            
+            From: http://www.xnawiki.com/index.php/Polygon_Triangulation
+            </summary>
+            <param name="vertices">The polygon vertices.</param>
+            <returns>The indexes used to render the points as a triangle list.</returns>
+        </member>
+        <member name="M:Phantom.Misc.Triangulator.IsPointInShape(Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2[])">
+            <summary>
+            Determines if a given point is located inside of a shape.
+            </summary>
+            <param name="point">The point to test.</param>
+            <param name="verts">The vertices of the shape.</param>
+            <returns>True if the point is in the shape; false otherwise.</returns>
+        </member>
+        <member name="T:Phantom.Misc.Triangulator.Triangle">
+            <summary>
+            A basic triangle structure that holds the three indices that make up a given triangle.
+            </summary>
+        </member>
+        <member name="T:Phantom.Physics.CollisionChecks">
+            <summary>
+            Static class to handle all the collision checking between game entities
+            </summary>
+        </member>
+        <member name="M:Phantom.Physics.CollisionChecks.CircleCircle(Phantom.Shapes.Circle,Phantom.Shapes.Circle)">
+            <summary>
+            Generates collision data for two circle shaped entities.
+            </summary>
+            <param name="a"></param>
+            <param name="b"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Phantom.Physics.CollisionChecks.CirclePolygon(Phantom.Shapes.Circle,Phantom.Shapes.Polygon)">
+            <summary>
+            Generates collision data for a circle shaped entity and a polygon
+            </summary>
+            <param name="a"></param>
+            <param name="b"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Phantom.Physics.CollisionChecks.PolygonPolygon(Phantom.Shapes.Polygon,Phantom.Shapes.Polygon)">
+            <summary>
+            Gneerates collision data for two polygon shaped entities
+            </summary>
+            <param name="a"></param>
+            <param name="b"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Phantom.Physics.CollisionData">
+            <summary>
+            A struct containing the collision data of the potential collision bewteen two entities
+            </summary>
+        </member>
+        <member name="F:Phantom.Physics.CollisionData.Empty">
+            <summary>
+            A default empty collision data set.
+            </summary>
+        </member>
+        <member name="F:Phantom.Physics.CollisionData.Position">
+            <summary>
+            An approximation of the collisions position (contact point).
+            </summary>
+        </member>
+        <member name="F:Phantom.Physics.CollisionData.Normal">
+            <summary>
+            The normal of the collision (indicating the best axis of separation to resolve interpenetration
+            </summary>
+        </member>
+        <member name="F:Phantom.Physics.CollisionData.Interpenetration">
+            <summary>
+            The amount of interpenetration (meassured in pixels)
+            </summary>
+        </member>
+        <member name="F:Phantom.Physics.CollisionData.A">
+            <summary>
+            The first entity involved in the collision
+            </summary>
+        </member>
+        <member name="F:Phantom.Physics.CollisionData.B">
+            <summary>
+            The second entity involved in the penetration
+            </summary>
+        </member>
+        <member name="M:Phantom.Physics.CollisionData.#ctor(System.Single)">
+            <summary>
+            Prepares a collision data set with the specified interpenetration
+            </summary>
+            <param name="interpenetration"></param>
+        </member>
+        <member name="M:Phantom.Physics.CollisionData.Clear">
+            <summary>
+            Clears the collision data set.
+            </summary>
+        </member>
+        <member name="M:Phantom.Physics.CollisionData.Invert">
+            <summary>
+            Inverts the collision data set by inverting the collision normal.
+            </summary>
+        </member>
+        <member name="P:Phantom.Physics.CollisionData.IsValid">
+            <summary>
+            Flag to indicate a valid collision occured.
+            </summary>
+        </member>
+        <member name="T:Phantom.Physics.Integrator">
+            <summary>
+            The Integrator class is responsible for updating the physics of its entities, and detecting and handling collisions between them.
+            </summary>
+        </member>
+        <member name="F:Phantom.Physics.Integrator.entities">
+            <summary>
+            An internal list of entities contained by the integrator.
+            </summary>
+        </member>
+        <member name="M:Phantom.Physics.Integrator.#ctor(System.Int32)">
+            <summary>
+            Creates a new integrator instance.
+            </summary>
+            <param name="physicsExecutionCount">The number of integration step each frame. For fast paced games with many physics, 4 is good value</param>
+        </member>
+        <member name="M:Phantom.Physics.Integrator.Update(System.Single)">
+            <summary>
+            The integrator integrate all its children before calling the regular update functions.
+            </summary>
+            <param name="elapsed"></param>
+        </member>
+        <member name="M:Phantom.Physics.Integrator.CheckEntityCollision(Phantom.Core.Entity)">
+            <summary>
+            Checks the collisions of an entity in the integrator's entity list
+            </summary>
+            <param name="index">Zero based index of the entity in the integrator's entity list.</param>
+        </member>
+        <member name="M:Phantom.Physics.Integrator.CheckCollisionBetween(Phantom.Core.Entity,Phantom.Core.Entity)">
+            <summary>
+            Checks and responds to the collision between two entities.
+            A collision can only occur if
+            - Both entities are not ghosts
+            - At least one entity initiates collisions
+            - both entities CanCollideWith(other) returns true
+            
+            Entities on repsond to the collision if
+            - Both are collidable
+            - AT least one has a mover
+            
+            </summary>
+            <param name="a"></param>
+            <param name="b"></param>
+        </member>
+        <member name="M:Phantom.Physics.Integrator.OnComponentAddedToLayer(Phantom.Core.Component)">
+            <summary>
+            Method called when a component is added to the integrators parent layer. If the component is an Entity it is added to the entity list.
+            </summary>
+            <param name="component"></param>
+        </member>
+        <member name="M:Phantom.Physics.Integrator.OnComponentRemovedToLayer(Phantom.Core.Component)">
+            <summary>
+            Method called when a component is removed from the integrators parent layer. If the component is an Entity it is also removed from the entity list.
+            </summary>
+            <param name="component"></param>
+        </member>
+        <member name="M:Phantom.Physics.Integrator.ClearEntities">
+            <summary>
+            Clears the entity list
+            TODO: Needs to be internal?
+            </summary>
+        </member>
+        <member name="M:Phantom.Physics.Integrator.GetEntityAt(Microsoft.Xna.Framework.Vector2)">
+            <summary>
+            Returns the first entity at the indicated position.
+            </summary>
+            <param name="position"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Phantom.Physics.Integrator.GetEntities">
+            <summary>
+            Returns an array with all entities.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Phantom.Physics.Integrator.GetEntitiesAt(Microsoft.Xna.Framework.Vector2)">
+            <summary>
+            Returns all entities at the indicated position
+            </summary>
+            <param name="position"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Phantom.Physics.Integrator.GetEntityCloseTo(Microsoft.Xna.Framework.Vector2,System.Single)">
+            <summary>
+            Returns the first entity that is on the indicated position or within the indicated distance.
+            </summary>
+            <param name="position"></param>
+            <param name="distance"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Phantom.Physics.Integrator.GetEntitiesInRect(Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2,System.Boolean)">
+            <summary>
+            Returns all entities in the indicated rectangle
+            </summary>
+            <param name="topLeft"></param>
+            <param name="bottomRight"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Phantom.Physics.Integrator.ChangeSize(Microsoft.Xna.Framework.Vector2,System.Boolean)">
+            <summary>
+            Called by the parents layer when its size is changed, removes or destroys the entities that are outside the new bounds.
+            </summary>
+            <param name="bounds"></param>
+            <param name="destroyEntities"></param>
+        </member>
+        <member name="T:Phantom.Physics.TiledIntegrator">
+            <summary>
+            A TiledIntegrator class is responsible for updating the physics of its entities, and detecting and handling collisions between them.
+            It divides the world in a number of square tiles to optimize the speed of collision detection. The optimal tile size is the same as the average 
+            of the lareger game entities. For entities larger than twice the tile size or for two entities that are both larger than 1.5 times the tile size,
+            the checks become inaccurate.
+            </summary>
+        </member>
+        <member name="F:Phantom.Physics.TiledIntegrator.neighbors">
+            <summary>
+            This array indicates the order in which tiles are checked. For the best effects, the entities on the same tile are checked first
+            then the tile below, above, to the right and to the left. The diagonal neighbors are checked last.
+            </summary>
+        </member>
+        <member name="M:Phantom.Physics.TiledIntegrator.#ctor(System.Int32,System.Single)">
+            <summary>
+            Creates a new tiledIntegrator
+            </summary>
+            <param name="physicsExecutionCount">The number of integration step each frame. For fast paced games with many physics, 4 is good value</param>
+            <param name="tileSize">The tile size (all tiles are squares), smaller tile perform better, but the collision checks become inaccurate if the entities grow larger than 150% of the tile size.</param>
+        </member>
+        <member name="M:Phantom.Physics.TiledIntegrator.OnAdd(Phantom.Core.Component)">
+            <summary>
+            An array of tiles is created when the integrator is added to a layer.
+            </summary>
+            <param name="parent"></param>
+        </member>
+        <member name="M:Phantom.Physics.TiledIntegrator.GetTile(Microsoft.Xna.Framework.Vector2)">
+            <summary>
+            Find and return the tile at the specified position
+            </summary>
+            <param name="position"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Phantom.Physics.TiledIntegrator.TileSize">
+            <summary>
+            The set tile size
+            </summary>
+        </member>
+        <member name="T:Phantom.Physics.TilePosition">
+            <summary>
+            A special class that keeps track of the tile a game entity is on in a tileIntegrator.
+            </summary>
+        </member>
+        <member name="F:Phantom.Physics.TilePosition.Tile">
+            <summary>
+            The current tile
+            </summary>
+        </member>
+        <member name="M:Phantom.Physics.TilePosition.#ctor(Phantom.Physics.TiledIntegrator)">
+            <summary>
+            Create an instance for the TilePosition
+            </summary>
+            <param name="integrator"></param>
+        </member>
+        <member name="M:Phantom.Physics.TilePosition.SetIntegrater(Phantom.Physics.TiledIntegrator)">
+            <summary>
+            Changes the integrator
+            </summary>
+            <param name="integrator"></param>
+        </member>
+        <member name="M:Phantom.Physics.TilePosition.SetTile(Phantom.Physics.TiledIntegrator.Tile)">
+            <summary>
+            Changes the tile and updates the new and old tiles' entity list
+            </summary>
+            <param name="tile"></param>
+        </member>
+        <member name="T:Phantom.Shapes.Circle">
+            <summary>
+            A circular shape with a radius. It's origin is always at the shape's center.
+            </summary>
+        </member>
+        <member name="T:Phantom.Shapes.Shape">
+            <summary>
+            Abstract class that is the common ancestor of all Shape classes
+            TODO: should be made internal (than nobody can make shapes outside the library?
+            </summary>
+        </member>
+        <member name="M:Phantom.Shapes.Shape.Collide(Phantom.Shapes.Shape)">
+            <summary>
+            Generate the collision data for this shape and another shape.
+            </summary>
+            <param name="other"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Phantom.Shapes.Shape.Scale(System.Single)">
+            <summary>
+            Scales the shape's size by the indicated amount
+            TODO: Rename ScaleBy
+            </summary>
+            <param name="scalar"></param>
+        </member>
+        <member name="M:Phantom.Shapes.Shape.IntersectEdgesWithLine(Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2)">
+            <summary>
+            Returns the points on the shape's edges that intersect with the line segment from <paramref name="start"/> to <paramref name="end"/>
+            </summary>
+            <param name="start"></param>
+            <param name="end"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Phantom.Shapes.Shape.UmbraProjection(Microsoft.Xna.Framework.Vector2,System.Single,System.Single,Microsoft.Xna.Framework.Vector2[]@,Microsoft.Xna.Framework.Vector2[]@)">
+            <summary>
+            Returns the the shape's umbra projected from a given origin as a list of triangle strip vertex coordinates
+            </summary>
+            <param name="origin">The projection origin (i.e. light source)</param>
+            <param name="maxDistance">The maximum distance to project the umbra to (i.e. light falloff distance)</param>
+            <param name="lightDiameter">The radius of the light to project soft shadows from, or 0 for hard shadows</param>
+            <param name="umbra">The area totally obscured from the origin</param>
+            <param name="penumbra">The area partially obscured by the origin if the light radius is > 0 (triangles with vertex order: near-obscured, far-obscured, far-unobscured)</param>
+            <returns>true if an umbra projection was formed</returns>
+        </member>
+        <member name="M:Phantom.Shapes.Shape.EdgeIntersection(Microsoft.Xna.Framework.Vector2)">
+            <summary>
+            Returns the points on the shape's edge that in the specified direction from the shape's origin
+            </summary>
+            <param name="direction"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Phantom.Shapes.Shape.ClosestPoint(Microsoft.Xna.Framework.Vector2)">
+            <summary>
+            Returns the closest point on the shapes outline to the specified point.
+            </summary>
+            <param name="point"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Phantom.Shapes.Shape.InShape(Microsoft.Xna.Framework.Vector2)">
+            <summary>
+            Returns true if the point is in the shape.
+            </summary>
+            <param name="position"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Phantom.Shapes.Shape.InRect(Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2,System.Boolean)">
+            <summary>
+            Returns true if the shape is entirely within the specified rectangle
+            </summary>
+            <param name="topLeft"></param>
+            <param name="bottomRight"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Phantom.Shapes.Shape.DistanceTo(Microsoft.Xna.Framework.Vector2)">
+            <summary>
+            Returns the distance to the specified point (0 if the point is in the shape)
+            </summary>
+            <param name="point"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Phantom.Shapes.Shape.ClosestVertice(Microsoft.Xna.Framework.Vector2)">
+            <summary>
+            Returns the position of vertice closest to the specified point.
+            </summary>
+            <param name="point"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Phantom.Shapes.Shape.RoughRadius">
+            <summary>
+            A rough indication of the shape's radius
+            </summary>
+        </member>
+        <member name="P:Phantom.Shapes.Shape.RoughWidth">
+            <summary>
+            A rough indication of tne shape's width 
+            </summary>
+        </member>
+        <member name="P:Phantom.Shapes.Circle.Radius">
+            <summary>
+            The circle's radius
+            </summary>
+        </member>
+        <member name="T:Phantom.Shapes.OABB">
+            <summary>
+            An Object Aligned Bounding Box: a rectangle that rotates with its Entity. Its origin is always in the center of the Rectangle
+            A better (but less familiar name shoud be EABR or EARectangle
+            </summary>
+        </member>
+        <member name="T:Phantom.Shapes.Polygon">
+            <summary>
+            A Polygon shape determined by a number of vertices. The collision treats the polygon as a convex polygon. The vertices are relative to the 
+            polygons orginin which is in (0, 0). 
+            </summary>
+        </member>
+        <member name="F:Phantom.Shapes.Polygon.Vertices">
+            <summary>
+            The vertices that determine the polygon's shape. Independent of orientation.
+            </summary>
+        </member>
+        <member name="M:Phantom.Shapes.Polygon.RotatedVertices(System.Single)">
+            <summary>
+            Creates and caches a rotated version of the polygon
+            </summary>
+            <param name="angle"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Phantom.Shapes.Polygon.RotatedNormals(System.Single)">
+            <summary>
+            Creates and caches the normals of a rotated version of the polygon
+            </summary>
+            <param name="angle"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Phantom.Shapes.OABB.#ctor(Microsoft.Xna.Framework.Vector2)">
+            <summary>
+            Creates a new OABB.
+            TODO: pass a fullsize (not half size)?
+            </summary>
+            <param name="halfSize">The dimensions of the rectange measured as the number of pixels from its center to its edges</param>
+        </member>
+        <member name="P:Phantom.Shapes.OABB.HalfSize">
+            <summary>
+            The dimensions of the rectange measured as the number of pixels from its center to its edges.
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "T:Phantom.Utils.Asynchrony" -->
+        <member name="F:Phantom.Utils.Asynchrony.tasks">
+            <summary>
+            This List contains all tasks as ITaskTester. This contruction
+            using the interface was required to handle different types of
+            generics.
+            </summary>
+        </member>
+        <member name="M:Phantom.Utils.Asynchrony.#ctor">
+            <summary>
+            Nothing to configure, just add an instance of this class to 
+            the PhantomGame.
+            </summary>
+        </member>
+        <member name="M:Phantom.Utils.Asynchrony.Create(System.Action,System.Action)">
+            <summary>
+            Create a task with an attached ready Action (a callback if you will).
+            </summary>
+            <param name="task">The action to preform asynchronous.</param>
+            <param name="ready">The action to call when the task is completed (this will be called in the gameloop).</param>
+            <returns>The resulting task, this still need to be Start()ed.</returns>
+        </member>
+        <member name="M:Phantom.Utils.Asynchrony.Create``1(System.Func{``0},System.Action{``0})">
+            <summary>
+            Create a task with an attached ready Action (a callback if you will).
+            </summary>
+            <param name="task">The action to preform asynchronous.</param>
+            <param name="ready">The action to call when the task is completed (this will be called in the gameloop).</param>
+            <returns>The resulting task, this still need to be Start()ed.</returns>
+        </member>
+        <member name="M:Phantom.Utils.Asynchrony.Create``2(System.Func{``1,``0},``1,System.Action{``0})">
+            <summary>
+            Create a task with an attached ready Action (a callback if you will).
+            </summary>
+            <param name="task">The action to preform asynchronous.</param>
+            <param name="data">The paramater data to pass along to the task.</param>
+            <param name="ready">The action to call when the task is completed (this will be called in the gameloop).</param>
+            <returns>The resulting task, this still need to be Start()ed.</returns>
+        </member>
+        <member name="M:Phantom.Utils.Asynchrony.Dispatch(System.Action)">
+            <summary>
+            Simply execute an action in the first game update.
+            </summary>
+            <param name="action">The action to invoke.</param>
+        </member>
+        <member name="M:Phantom.Utils.Asynchrony.Update(System.Single)">
+            <summary>
+            Within the Update method of this component every
+            created task is checked if it's ready or not.
+            If it was ready the callback/action is invoked.
+            </summary>
+            <param name="elapsed"></param>
+        </member>
+        <member name="P:Phantom.Utils.Asynchrony.Instance">
+            <summary>Quick access to the Asynchrony instance.</summary>
+        </member>
+        <member name="T:Phantom.Utils.Asynchrony.ITaskTester">
+            <summary>
+            Thanks Nils, for this idea.
+            </summary>
+        </member>
+        <member name="T:Phantom.Utils.EntityFactory">
+            <summary>
+            The EntityFactory can create entities with components from a blueprint specifying the
+            entity and component classes. You have to add the references of each assembly in the 
+            project seperatly first. Call the AddTypes method for each assembly first. Typically
+            you'll want to add the following lines to your main game class:
+            
+            EntityFactory.AddTypes(Assembly.GetAssembly(typeof(Game1)));
+            EntityFactory.AddTypes(Assembly.GetAssembly(typeof(PhantomGame)));
+            
+            </summary>
+        </member>
+        <member name="M:Phantom.Utils.EntityFactory.AddTypes(System.Reflection.Assembly)">
+            <summary>
+            This function adds a reference to all components and entities of an assembly to
+            the factories list. It does not overwrite reference to components and entities
+            with the same name. In that case it generates a warning instead.
+            To prevent a component or entity class from being added to the factory put the 
+            following static property in the class definition:
+            
+            public static bool InFactory { get { return false; } }
+            
+            </summary>
+            <param name="assembly"></param>
+        </member>
+        <member name="M:Phantom.Utils.EntityFactory.AssembleEntity(Phantom.Utils.PCNComponent,System.String)">
+            <summary>
+            Assembles an entity following the specifications in the blueprint
+            </summary>
+            <param name="blueprint">A string describing the entity in PhantomComponentNotion format</param>
+            <returns></returns>
+        </member>
+        <member name="M:Phantom.Utils.EntityFactory.AssembleComponent(Phantom.Utils.PCNComponent)">
+            <summary>
+            Assembles a component  following the specifications in the blueprint
+            </summary>
+            <param name="blueprint">A string describing the component in PhantomComponentNotion format</param>
+            <returns></returns>
+        </member>
+        <member name="M:Phantom.Utils.EntityFactory.BuildInstance(Phantom.Utils.PCNComponent,Phantom.Utils.PCNComponent,System.String)">
+            <summary>
+            Build an instance of a blueprint and pass extra information to it through its properties
+            </summary>
+            <param name="blueprint">The blueprint describing how the instance should be build</param>
+            <param name="description">PCN components that represent additional parameters</param>
+            <param name="blueprintName">The blueprint name for future reference</param>
+            <returns></returns>
+        </member>
+        <member name="M:Phantom.Utils.EntityFactory.InstanceToPCNString(Phantom.Core.Entity)">
+            <summary>
+            Creates an instance description based from the blueprint name and the public properties of the entity
+            </summary>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Phantom.Utils.MapLoader">
+            <summary>
+            Static class that handles loading and saving of maps from and to PCN format.
+            </summary>
+        </member>
+        <member name="F:Phantom.Utils.MapLoader.EntityLists">
+            <summary>
+            A dictionary containing dictionaries for entityLists
+            </summary>
+        </member>
+    </members>
+</doc>
