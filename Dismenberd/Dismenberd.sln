@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2015
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dismenberd", "Dismenberd.csproj", "{FD1F585D-7379-E00B-814C-BE6FF68384BE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dismenberd.Editor", "Dismenberd.Editor.csproj", "{EAD8ADD8-2B42-7EDE-5CC4-AC67BB7533AC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FD1F585D-7379-E00B-814C-BE6FF68384BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD1F585D-7379-E00B-814C-BE6FF68384BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD1F585D-7379-E00B-814C-BE6FF68384BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD1F585D-7379-E00B-814C-BE6FF68384BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EAD8ADD8-2B42-7EDE-5CC4-AC67BB7533AC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EAD8ADD8-2B42-7EDE-5CC4-AC67BB7533AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EAD8ADD8-2B42-7EDE-5CC4-AC67BB7533AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EAD8ADD8-2B42-7EDE-5CC4-AC67BB7533AC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

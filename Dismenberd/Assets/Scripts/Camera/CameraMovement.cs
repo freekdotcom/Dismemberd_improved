@@ -24,7 +24,8 @@ public class CameraMovement : MonoBehaviour {
 		skeleton = GameObject.Find ("Skeleton_Complet");
 
 		player = skeleton.transform;
-	}
+        Cursor.visible = false;
+    }
 
 	void Update(){
 		if (Input.GetKey ("f")) {

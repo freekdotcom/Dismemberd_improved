@@ -11,7 +11,7 @@ public class Throwing : MonoBehaviour {
 	public static bool holding;
 
 	public bool canThrow;
-	public bool hasThrown ,hasThrownBox;
+	bool hasThrown ,hasThrownBox;
 
 	public float throwSpeed;
 	public Slider throwForce;
@@ -110,97 +110,69 @@ public class Throwing : MonoBehaviour {
 		} 
 	}
 
-	void OnTriggerStay(Collider coll){
-		if (coll.gameObject.tag == "LeftUpperArm"  && !holding && canThrow) {
-			pickUpThrow.text = "Hold 'R' to pickup for throw";
-			if(Input.GetKey ("r")){
-				holding = true;
-				currentObject = coll.gameObject;
-				coll.gameObject.transform.position = throwStartPosition.transform.position;
-			}
-		}
-		
-		if(coll.gameObject.tag == "LeftLowerArm" && !holding && canThrow){
-			pickUpThrow.text = "Hold 'R' to pickup for throw";
-			if(Input.GetKey ("r")){
-				holding = true;
-				currentObject = coll.gameObject;
-				coll.gameObject.transform.position = throwStartPosition.transform.position;
-			}
-		}
-		
-		if (coll.gameObject.tag == "RightUpperArm" && !holding && canThrow) {
-			pickUpThrow.text = "Hold 'R' to pickup for throw";
-			if(Input.GetKey ("r")){
-				holding = true;
-				currentObject = coll.gameObject;
-				coll.gameObject.transform.position = throwStartPosition.transform.position;
-			}
-		}
-		
-		if(coll.gameObject.tag == "RightLowerArm" && !holding && canThrow){
-			pickUpThrow.text = "Hold 'R' to pickup for throw";
-			if(Input.GetKey ("r")){
-				holding = true;
-				currentObject = coll.gameObject;
-				coll.gameObject.transform.position = throwStartPosition.transform.position;
-			}
-		}
-		
-		if (coll.gameObject.tag == "LeftUpperLeg" && !holding && canThrow) {
-			pickUpThrow.text = "Hold 'R' to pickup for throw";
-			if(Input.GetKey ("r")){
-				holding = true;
-				currentObject = coll.gameObject;
-				coll.gameObject.transform.position = throwStartPosition.transform.position;
-			}
-		}
-		
-		if(coll.gameObject.tag == "LeftLowerLeg" && !holding && canThrow){
-			pickUpThrow.text = "Hold 'R' to pickup for throw";
-			if(Input.GetKey ("r")){
-				holding = true;
-				currentObject = coll.gameObject;
-				coll.gameObject.transform.position = throwStartPosition.transform.position;
-			}
-		}
-		
-		if (coll.gameObject.tag == "RightUpperLeg" && !holding && canThrow) {
-			pickUpThrow.text = "Hold 'R' to pickup for throw";
-			if(Input.GetKey ("r")){
-				holding = true;
-				currentObject = coll.gameObject;
-				coll.gameObject.transform.position = throwStartPosition.transform.position;
-			}
-		}
-		
-		if(coll.gameObject.tag == "RightLowerLeg" && !holding && canThrow){
-			pickUpThrow.text = "Hold 'R' to pickup for throw";
-			if(Input.GetKey ("r")){
-				holding = true;
-				currentObject = coll.gameObject;
-				coll.gameObject.transform.position = throwStartPosition.transform.position;
-			}
-		}
+    void CollisionStuff(Collider coll, string bodyPart)
+    {
+        if (coll.gameObject.tag == bodyPart && !holding && canThrow)
+        {
+            pickUpThrow.text = "Hold 'R' to pickup for throw";
+            if (Input.GetKey("r"))
+            {
+                holding = true;
+                currentObject = coll.gameObject;
+                coll.gameObject.transform.position = throwStartPosition.transform.position;
+            }
+        }
+    }
 
-		if(coll.gameObject.tag == "SkeletonHead" && !holding){
-			pickUpThrow.text = "Hold 'R' to pickup for throw";
-			if(Input.GetKey ("r")){
-				holding = true;
-				currentObject = coll.gameObject;
-				coll.gameObject.transform.position = throwStartPosition.transform.position;
-			}
-		}
-		
-		if (coll.gameObject.tag == "Box" && !holding  && canThrow) {
-			pickUpThrow.text = "Hold 'R' to pickup for throw";
-			if(Input.GetKey("r")){
-				holding = true;
-				currentObject = coll.gameObject;
-				coll.gameObject.transform.position = boxStartPosition.transform.position;
-				
-			}
-		}
+
+	void OnTriggerStay(Collider coll){
+
+	    switch (coll.gameObject.tag)
+	    {
+            case "LeftUpperArm":
+                CollisionStuff(coll, "LeftUpperArm");
+                break;
+
+            case "LeftLowerArm":
+                CollisionStuff(coll, "LeftLowerArm");
+                break;
+
+            case "RightUpperArm":
+                CollisionStuff(coll, "RightUpperArm");
+                break;
+
+            case "RightLowerArm":
+                CollisionStuff(coll, "RightLowerArm");
+                break;
+
+            case "LeftUpperLeg":
+                CollisionStuff(coll, "LeftUpperLeg");
+                break;
+
+            case "LeftLowerLeg":
+                CollisionStuff(coll, "LeftLowerLeg");
+                break;
+
+            case "RightUpperLeg":
+                CollisionStuff(coll, "RightUpperLeg");
+                break;
+
+            case "RightLowerLeg":
+                CollisionStuff(coll, "RightLowerLeg");
+                break;
+
+            case "SkeletonHead":
+                CollisionStuff(coll, "SkeletonHead");
+                break;
+
+            case "Box":
+                CollisionStuff(coll, "Box");
+                break;
+
+            default:
+	            break;
+	    }		
+
 	}
 	void OnTriggerExit(Collider coll){
 		pickUpThrow.text = "";
