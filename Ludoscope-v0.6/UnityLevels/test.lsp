@@ -40,7 +40,7 @@ position: (22,-138)
 module:
 name: "CreateDungeon"
 alphabet: "Tiles"
-position: (120,88)
+position: (115,92)
 type: Recipe
 match: None
 inputs: "BuildDungeon"

@@ -49,7 +49,7 @@ public class PlateScript : MonoBehaviour {
 
 	void OnCollisionEnter(Collision col)
 	{
-		if (col.gameObject.CompareTag ("LeftLowerArm") || col.gameObject.CompareTag("LeftUpperArm")
+		if (col.gameObject.CompareTag ("Bones") || col.gameObject.CompareTag("LeftUpperArm")
 		    || col.gameObject.CompareTag("RightLowerArm") || col.gameObject.CompareTag("RightUpperArm") 
 		    || col.gameObject.CompareTag("LeftUpperLeg") || col.gameObject.CompareTag("LeftLowerLeg") 
 		    || col.gameObject.CompareTag("RightUpperLeg") || col.gameObject.CompareTag("RightLowerLeg")) 
