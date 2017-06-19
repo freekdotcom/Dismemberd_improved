@@ -63,6 +63,7 @@ public class Movement : MonoBehaviour
         playerBooleanManager.hasLeftUpperLeg = true;
         playerBooleanManager.hasRightUpperLeg = true;
         playerBooleanManager.hasHead = true;
+        playerBooleanManager.hasKey = false;
 		
 		headMovement = false;
 		

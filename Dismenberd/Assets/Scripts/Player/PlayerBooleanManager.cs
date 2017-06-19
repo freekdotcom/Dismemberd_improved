@@ -13,6 +13,7 @@ public class PlayerBooleanManager : MonoBehaviour {
     public bool hasLeftUpperLeg;
     public bool hasRightUpperLeg;
     public bool hasHead;
+    public bool hasKey;
 
 
 
