@@ -15,7 +15,7 @@ public class Parser : MonoBehaviour
     public GameObject key;
     public GameObject Finish;
 
-    private string file = "C:\\Users\\siem\\Documents\\Dismemberd_improved\\puzzle.xpr";
+    private string file = @"C:\Users\TheCore\Desktop\Dismemberd_improved\puzzle.xpr";
 
     private string fileData;
     private int x;
@@ -60,7 +60,7 @@ public class Parser : MonoBehaviour
 
                 if (tile == door)
                 {
-                    if (map[x2 + 1, y2] != "wall")
+                    if (map[x2, y2 + 1] != "wall")
                     {
                         newTile.transform.Rotate(Vector3.up, 90);
                         newTile.transform.position = newTile.transform.position - new Vector3((tileSize / 2), 0, (tileSize / 2) * -1);
