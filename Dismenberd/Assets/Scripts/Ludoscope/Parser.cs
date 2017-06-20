@@ -43,8 +43,8 @@ public class Parser : MonoBehaviour
         for (int i = 0; i < x * y; i++)
         {
             var t = data[3 + i].Split(':');
-//            var y2 = i % y;
-//            var x2 = i / y;
+            //            var y2 = i % y;
+            //            var x2 = i / y;
             var y2 = i / x;
             var x2 = i % x;
             map[x2, y2] = t[1];
@@ -57,6 +57,15 @@ public class Parser : MonoBehaviour
                 GameObject tile = getGameObject(map[x2, y2]);
                 GameObject newTile = Instantiate(tile);
                 newTile.transform.position = new Vector3(x2 * tileSize, 0, y2 * tileSize);
+
+                if (tile == door)
+                {
+                    if (map[x2 + 1, y2] != "wall")
+                    {
+                        newTile.transform.Rotate(Vector3.up, 90);
+                        newTile.transform.position = newTile.transform.position - new Vector3((tileSize / 2), 0, (tileSize / 2) * -1);
+                    }
+                }
             }
         }
     }
