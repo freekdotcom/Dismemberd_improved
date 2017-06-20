@@ -69,6 +69,16 @@ public class Parser : MonoBehaviour
                 return wall;
             case "open":
                 return open;
+            case "key":
+                return key;
+            case "door":
+                return door;
+            case "entrance":
+                return entrance;
+            case "ending":
+                return Finish;
+            case "lockedDoor":
+                return lockedDoor;
             default:
                 return new GameObject();
         }
