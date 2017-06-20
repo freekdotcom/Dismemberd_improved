@@ -43,8 +43,10 @@ public class Parser : MonoBehaviour
         for (int i = 0; i < x * y; i++)
         {
             var t = data[3 + i].Split(':');
-            var y2 = i % y;
-            var x2 = i / y;
+//            var y2 = i % y;
+//            var x2 = i / y;
+            var y2 = i / x;
+            var x2 = i % x;
             map[x2, y2] = t[1];
         }
 
