@@ -68,7 +68,7 @@ public class Parser : MonoBehaviour
             case "open":
                 return open;
             default:
-                return null;
+                return new GameObject();
         }
     }
 
