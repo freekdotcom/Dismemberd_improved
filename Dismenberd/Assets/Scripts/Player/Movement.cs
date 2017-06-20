@@ -49,6 +49,8 @@ public class Movement : MonoBehaviour
 	// Use this for initialization
 	void Start ()
 	{
+        MainCamera = Camera.main.gameObject;
+        thirdPersonOrbitCamera = MainCamera.GetComponent<ThirdPersonOrbitCam>();
 	    playerBooleanManager = new PlayerBooleanManager();
 
 		canDie = false;

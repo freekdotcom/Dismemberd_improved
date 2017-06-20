@@ -47,9 +47,9 @@ public class ThirdPersonOrbitCam : MonoBehaviour
 
 	void Awake()
 	{
-
+        player = GameObject.Find("Player").gameObject.transform;
 		head = GameObject.FindGameObjectWithTag ("SkeletonHead");
-		skeleton = GameObject.Find ("Skeleton_Complet");
+		skeleton = GameObject.Find ("Player");
 		
 		player = skeleton.transform;
 

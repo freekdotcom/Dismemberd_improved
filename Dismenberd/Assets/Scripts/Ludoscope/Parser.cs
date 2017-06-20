@@ -15,7 +15,7 @@ public class Parser : MonoBehaviour
     public GameObject key;
     public GameObject Finish;
 
-    private string file = "C:\\Users\\TheCore\\Desktop\\Dismemberd_improved\\puzzle.xpr";
+    private string file = "C:\\Users\\siem\\Documents\\Dismemberd_improved\\puzzle.xpr";
 
     private string fileData;
     private int x;
