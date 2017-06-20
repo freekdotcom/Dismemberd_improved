@@ -360,7 +360,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 169562}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.217, y: 0.73499966, z: -0.76}
+  m_LocalPosition: {x: 0.217, y: 0.735, z: -0.907}
   m_LocalScale: {x: 0.33333334, y: 0.33333337, z: 0.33333337}
   m_Children: []
   m_Father: {fileID: 462462}
@@ -426,7 +426,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 138592}
   m_LocalRotation: {x: -0.008522328, y: 0.6785301, z: -0.009404139, w: -0.73446304}
-  m_LocalPosition: {x: -0.06, y: 0.81, z: -4.25}
+  m_LocalPosition: {x: 0.23, y: 0.78, z: 3.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 489436}
@@ -987,7 +987,7 @@ BoxCollider:
   m_GameObject: {fileID: 108238}
   m_Material: {fileID: 13400000, guid: ed0bf236f8155fe429a60337668fed0f, type: 2}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 0.12636897, y: 0.08311079, z: 0.35668692}
   m_Center: {x: 0.018493285, y: 0.0022227464, z: -0.11489342}
@@ -999,7 +999,7 @@ BoxCollider:
   m_GameObject: {fileID: 183224}
   m_Material: {fileID: 13400000, guid: ed0bf236f8155fe429a60337668fed0f, type: 2}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 0.09378402, y: 0.09005918, z: 0.46475363}
   m_Center: {x: 0.013637837, y: -0.012206292, z: -0.24480197}
@@ -1011,7 +1011,7 @@ BoxCollider:
   m_GameObject: {fileID: 107852}
   m_Material: {fileID: 13400000, guid: ed0bf236f8155fe429a60337668fed0f, type: 2}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 0.12636897, y: 0.08311079, z: 0.35668692}
   m_Center: {x: 0.018493285, y: 0.0022227464, z: -0.11489342}
@@ -1023,7 +1023,7 @@ BoxCollider:
   m_GameObject: {fileID: 193632}
   m_Material: {fileID: 13400000, guid: ed0bf236f8155fe429a60337668fed0f, type: 2}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 0.09378402, y: 0.09005918, z: 0.46475363}
   m_Center: {x: 0.013638791, y: -0.012206292, z: -0.24480149}
@@ -1035,7 +1035,7 @@ BoxCollider:
   m_GameObject: {fileID: 116356}
   m_Material: {fileID: 13400000, guid: ed0bf236f8155fe429a60337668fed0f, type: 2}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 0.18427466, y: 0.12644486, z: 0.5358068}
   m_Center: {x: 0.15874246, y: -0.0058556027, z: -0.27057993}
@@ -1049,8 +1049,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.48580438, y: 0.34861502, z: 0.78729886}
-  m_Center: {x: 0.0277915, y: -0.03459658, z: 0.31449544}
+  m_Size: {x: 0.7940567, y: 0.3159197, z: 1.7910755}
+  m_Center: {x: 0.018903464, y: -0.05093942, z: -0.026380084}
 --- !u!65 &6564966
 BoxCollider:
   m_ObjectHideFlags: 1
@@ -1059,7 +1059,7 @@ BoxCollider:
   m_GameObject: {fileID: 186690}
   m_Material: {fileID: 13400000, guid: ed0bf236f8155fe429a60337668fed0f, type: 2}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 0.059318006, y: 0.0890845, z: 0.30325547}
   m_Center: {x: -0.0013433853, y: -0.008117014, z: -0.11237945}
@@ -1071,7 +1071,7 @@ BoxCollider:
   m_GameObject: {fileID: 126378}
   m_Material: {fileID: 13400000, guid: ed0bf236f8155fe429a60337668fed0f, type: 2}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 0.18427466, y: 0.12644486, z: 0.5358068}
   m_Center: {x: 0.15874246, y: -0.0058556027, z: -0.27057993}
@@ -1083,7 +1083,7 @@ BoxCollider:
   m_GameObject: {fileID: 162998}
   m_Material: {fileID: 13400000, guid: ed0bf236f8155fe429a60337668fed0f, type: 2}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 0.059318006, y: 0.0890845, z: 0.30325547}
   m_Center: {x: -0.0013433853, y: -0.008117014, z: -0.11237945}
@@ -1095,7 +1095,7 @@ BoxCollider:
   m_GameObject: {fileID: 102884}
   m_Material: {fileID: 13400000, guid: ed0bf236f8155fe429a60337668fed0f, type: 2}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 0.19941781, y: 0.30031902, z: 0.2605697}
   m_Center: {x: 0.0000009536743, y: -0.007650315, z: 0.020246116}
@@ -1335,3 +1335,4 @@ MonoBehaviour:
   hasLeftUpperLeg: 0
   hasRightUpperLeg: 0
   hasHead: 0
+  hasKey: 0

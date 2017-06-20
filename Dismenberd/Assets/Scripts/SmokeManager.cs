@@ -31,7 +31,13 @@ public class SmokeManager : MonoBehaviour {
 			isded = true;
 			Destroy (other);
 		}
-		if (other.gameObject.tag == "SkeletonHead") {
+        if (other.gameObject.name == "Player")
+        {
+            Debug.Log("hit player");
+            isded = true;
+            Destroy(other);
+        }
+        if (other.gameObject.tag == "SkeletonHead") {
 			Debug.Log ("hit player");
 			isded = true;
 			Destroy (other);

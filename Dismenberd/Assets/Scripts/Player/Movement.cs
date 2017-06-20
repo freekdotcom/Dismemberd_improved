@@ -79,9 +79,31 @@ public class Movement : MonoBehaviour
 	{
 		
 		if (!headMovement) {
-			
-			float translationVertical = Input.GetAxis ("Vertical") * -speed * Time.deltaTime;
-			float translationHorizontal = Input.GetAxis ("Horizontal") * -speed * Time.deltaTime;
+
+            float translationVertical;
+            float translationHorizontal;
+
+
+            if(!playerBooleanManager.hasLeftLowerLeg && !playerBooleanManager.hasRightLowerLeg && !IsGrounded())
+            {
+                translationVertical = Input.GetAxis("Vertical") * -speed * Time.deltaTime / 2;
+                translationHorizontal = Input.GetAxis("Horizontal") * -speed * Time.deltaTime / 2;
+            }
+            else if (!playerBooleanManager.hasLeftLowerLeg && !playerBooleanManager.hasRightLowerLeg && IsGrounded())
+            {
+                translationVertical = Input.GetAxis("Vertical") * -speed * Time.deltaTime / 2;
+                translationHorizontal = Input.GetAxis("Horizontal") * -speed * Time.deltaTime / 2;
+            }
+            else if (IsGrounded())
+            {
+                translationVertical = Input.GetAxis("Vertical") * -speed * Time.deltaTime;
+                translationHorizontal = Input.GetAxis("Horizontal") * -speed * Time.deltaTime;
+            }
+            else
+            {
+                translationVertical = Input.GetAxis("Vertical") * -speed * Time.deltaTime / 4;
+                translationHorizontal = Input.GetAxis("Horizontal") * -speed * Time.deltaTime / 4;
+            }
 			//transform.Translate (translationVertical, 0, translationHorizontal);
 			rb.AddRelativeForce (translationHorizontal * speed, 0, translationVertical * speed, ForceMode.Impulse);
 			
