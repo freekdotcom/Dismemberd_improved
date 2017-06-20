@@ -50,11 +50,11 @@ public class Parser : MonoBehaviour
 
         for (int x2 = 0; x2 < x; x2++)
         {
-            for (int y2 = 0; y2 < x; y2++)
+            for (int y2 = 0; y2 < y; y2++)
             {
                 GameObject tile = getGameObject(map[x2, y2]);
                 GameObject newTile = Instantiate(tile);
-                newTile.transform.position = new Vector3(x * tileSize, y * tileSize, 0);
+                newTile.transform.position = new Vector3(x2 * tileSize, 0, y2 * tileSize);
             }
         }
     }
