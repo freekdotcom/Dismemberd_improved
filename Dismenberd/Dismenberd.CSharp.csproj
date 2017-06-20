@@ -139,6 +139,7 @@
     <Compile Include="Assets\Scripts\Kicking.cs" />
     <Compile Include="Assets\Scripts\LineToDoor.cs" />
     <Compile Include="Assets\Scripts\LiquidManager.cs" />
+    <Compile Include="Assets\Scripts\Ludoscope\Parser.cs" />
     <Compile Include="Assets\Scripts\Menu Scripts\MenuManager.cs" />
     <Compile Include="Assets\Scripts\Menu Scripts\ScaleManager.cs" />
     <Compile Include="Assets\Scripts\NextLevel.cs" />
