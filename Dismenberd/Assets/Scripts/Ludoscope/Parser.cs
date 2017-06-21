@@ -14,8 +14,9 @@ public class Parser : MonoBehaviour
     public GameObject lockedDoor;
     public GameObject key;
     public GameObject Finish;
+    public GameObject bones;
 
-    private string file = @"C:\Users\TheCore\Desktop\Dismemberd_improved\puzzle.xpr";
+    private string file = @"C:\Users\lolsi\Documents\Dismemberd_improved\puzzle.xpr";
 
     private string fileData;
     private int x;
@@ -58,7 +59,7 @@ public class Parser : MonoBehaviour
                 GameObject newTile = Instantiate(tile);
                 newTile.transform.position = new Vector3(x2 * tileSize, 0, y2 * tileSize);
 
-                if (tile == door)
+                if (tile == door || tile == lockedDoor)
                 {
                     if (map[x2, y2 + 1] != "wall")
                     {
@@ -88,6 +89,8 @@ public class Parser : MonoBehaviour
                 return Finish;
             case "lockedDoor":
                 return lockedDoor;
+            case "bone":
+                return bones;
             default:
                 return new GameObject();
         }
