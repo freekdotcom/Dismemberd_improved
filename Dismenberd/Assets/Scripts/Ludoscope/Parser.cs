@@ -15,6 +15,7 @@ public class Parser : MonoBehaviour
     public GameObject key;
     public GameObject Finish;
     public GameObject bones;
+    public GameObject pressurePlate;
 
     private string file = @"C:\Users\lolsi\Documents\Dismemberd_improved\puzzle.xpr";
 
@@ -91,6 +92,8 @@ public class Parser : MonoBehaviour
                 return lockedDoor;
             case "bone":
                 return bones;
+            case "pressurePlate":
+                return pressurePlate;
             default:
                 return new GameObject();
         }

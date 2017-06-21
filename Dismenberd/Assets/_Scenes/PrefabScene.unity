@@ -126,6 +126,8 @@ MonoBehaviour:
   key: {fileID: 1803440242310196, guid: cb815522862af12468f21e257711da2a, type: 2}
   Finish: {fileID: 1374747751087694, guid: 455427e45b5bfbf4e9e7a6d6020decf1, type: 2}
   bones: {fileID: 1019020224958072, guid: d285abec585e74445b853bc0c0e93b49, type: 2}
+  pressurePlate: {fileID: 1049100372171334, guid: 8995c97a56a7bbd45b16bc845fdb8dd1,
+    type: 2}
 --- !u!4 &390296224
 Transform:
   m_ObjectHideFlags: 0
