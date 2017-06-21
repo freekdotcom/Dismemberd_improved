@@ -128,6 +128,8 @@ MonoBehaviour:
   bones: {fileID: 1019020224958072, guid: d285abec585e74445b853bc0c0e93b49, type: 2}
   pressurePlate: {fileID: 1049100372171334, guid: 8995c97a56a7bbd45b16bc845fdb8dd1,
     type: 2}
+  hardPuzzleNormal: {fileID: 1786330087997826, guid: a7fa3916e13300c46b9ce754165a947d,
+    type: 2}
 --- !u!4 &390296224
 Transform:
   m_ObjectHideFlags: 0
