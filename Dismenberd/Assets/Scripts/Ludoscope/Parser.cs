@@ -91,17 +91,22 @@ public class Parser : MonoBehaviour
                         }
                     }
 
-                    // link doors
-                    for (int x3 = 1; x3 < 7; x3++)
+                    // skip room if no pressurePlate is found
+                    if (!(pressurePlate == new Vector2(0, 0)))
                     {
-                        for (int y3 = 1; y3 < 7; y3++)
+                        // link doors
+                        for (int x3 = -3; x3 < 4; x3++)
                         {
-                            if (map[x4 + x3, y4 + y3] == "door")
+                            for (int y3 = -3; y3 < 4; y3++)
                             {
-                                // link door
-                                int a = Convert.ToInt16(pressurePlate.x);
-                                int b = Convert.ToInt16(pressurePlate.y);
-                                gameMap[a, b].gameObject.GetComponent<PlateScript>().door[0] = gameMap[x4 - x3, y4 - y3];
+                                if (map[x4 + x3, y4 + y3] == "door")
+                                {
+                                    // link door
+                                    int a = Convert.ToInt16(pressurePlate.x);
+                                    int b = Convert.ToInt16(pressurePlate.y);
+                                    gameMap[a, b].gameObject.GetComponent<PlateScript>().door[0] =
+                                        gameMap[x4 + x3, y4 + y3];
+                                }
                             }
                         }
                     }
