@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography.X509Certificates;
 using System.Xml.XPath;
+using Boo.Lang.Runtime;
 using UnityEngine;
 
 public class Parser : MonoBehaviour
@@ -46,16 +47,18 @@ public class Parser : MonoBehaviour
 
         string[,] map = new string[x, y];
 
+        // Parse file to map data
         for (int i = 0; i < x * y; i++)
         {
             var t = data[3 + i].Split(':');
-            //            var y2 = i % y;
-            //            var x2 = i / y;
             var y2 = i / x;
             var x2 = i % x;
             map[x2, y2] = t[1];
         }
 
+        var rooms = getRooms(map);
+
+        // Load in Map
         for (int x2 = 0; x2 < x; x2++)
         {
             for (int y2 = 0; y2 < y; y2++)
@@ -128,6 +131,36 @@ public class Parser : MonoBehaviour
             default:
                 return new GameObject();
         }
+    }
+
+    private List<Vector2> getRooms(string[,] map)
+    {
+        List<Vector2> rooms = new List<Vector2>();
+
+        int roomSize = 5;
+
+        for (int x2 = 0; x2 < x - roomSize; x2++)
+        {
+            for (int y2 = 0; y2 < y - roomSize; y2++)
+            {
+                // Check
+                bool failed = false;
+                for (int i= x2; i < x2 + roomSize; i++)
+                    for (int l = y2; l < y2 + roomSize; l++)
+                        if (map[i, l] == "wall")
+                        {
+                            failed = true;
+                            break;
+                        }
+
+                if (!failed)
+                {
+                    rooms.Add(new Vector2(x2,y2));
+                }
+            }
+        }
+
+        return rooms;
     }
 
     // Update is called once per frame
