@@ -18,7 +18,7 @@ public class Parser : MonoBehaviour
     public GameObject pressurePlate;
     public GameObject hardPuzzleNormal;
 
-    private string file = @"C:\Users\lolsi\Documents\Dismemberd_improved\puzzle.xpr";
+    private string file = @"C:\Users\siem\Documents\Dismemberd_improved\puzzle.xpr";
 
     private string fileData;
     private int x;
@@ -67,6 +67,31 @@ public class Parser : MonoBehaviour
                     {
                         newTile.transform.Rotate(Vector3.up, 90);
                         newTile.transform.position = newTile.transform.position - new Vector3((tileSize / 2), 0, (tileSize / 2) * -1);
+                    }
+                }
+
+                if (tile == entrance)
+                {
+                    if (map[x2, y2 + 1] != "wall")
+                    {
+                        newTile.transform.Rotate(Vector3.up, -90);
+                        newTile.transform.position = newTile.transform.position - new Vector3((tileSize / 2) - 6, 0, (tileSize / 2) * -1);
+                    }
+                    if (map[x2, y2 - 1] != "wall")
+                    {
+                        newTile.transform.Rotate(Vector3.up, 90);
+                        newTile.transform.position = newTile.transform.position - new Vector3((tileSize / 2), 0, (tileSize / 2) * -1);
+                    }
+                    if (map[x2 + 1, y2] != "wall")
+                    {
+                        //newTile.transform.Rotate(Vector3.up,);
+                        newTile.transform.position = newTile.transform.position - new Vector3((tileSize / 2) - 3, 0, (tileSize / 2) * -1 + 3);
+
+                    }
+                    if (map[x2 - 1, y2] != "wall")
+                    {
+                        newTile.transform.Rotate(Vector3.up, 180);
+                        newTile.transform.position = newTile.transform.position - new Vector3((tileSize / 2) - 3, 0, (tileSize / 2) * -1 - 3);
                     }
                 }
             }
