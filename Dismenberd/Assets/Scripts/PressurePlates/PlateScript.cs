@@ -7,7 +7,7 @@ public class PlateScript : MonoBehaviour {
 	public static bool canSink = false;
 	public bool doorOpens = false;
 	public bool isPressed = false;
-	public GameObject door;
+    public GameObject[] door;
 
 	public Vector3 start;
 	public Vector3 end;
@@ -23,10 +23,10 @@ public class PlateScript : MonoBehaviour {
 	void Start() {
 
 		doorOpens = false;
-
-		if (door.gameObject != null) {
-			start = door.transform.position;
-			end = new Vector3 (door.transform.position.x, -7.8f, door.transform.position.z);
+        foreach(GameObject d in door)
+		if (d.gameObject != null) {
+			start = d.transform.position;
+			end = new Vector3 (d.transform.position.x, -7.8f, d.transform.position.z);
 		}
 
 		PP_On = Resources.Load<AudioClip>("Pressureplate_On");
@@ -38,12 +38,20 @@ public class PlateScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		
-		if (isPressed) {
-			if(door.gameObject != null){
-				door.transform.Translate (new Vector3 (0, -0.1f, 0));
-				doorOpens = true;
-			}
-			door.GetComponent<DoorSFX>().PlaySound();
+		if (isPressed)
+        {
+            foreach (GameObject d in door)
+            {
+                if (d.gameObject != null)
+                {
+                    d.transform.Translate(new Vector3(0, -0.1f, 0));
+                    doorOpens = true;
+                }
+            }
+            foreach (GameObject d in door)
+            {
+                d.GetComponent<DoorSFX>().PlaySound();
+            }
 		}
 	}
 
