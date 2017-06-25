@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Xml.XPath;
 using Boo.Lang.Runtime;
@@ -95,7 +96,6 @@ public class Parser : MonoBehaviour
                     if (!(pressurePlate == new Vector2(0, 0)))
                     {
                         // link doors
-                        int i = 0;
                         for (int x3 = -3; x3 < 4; x3++)
                         {
                             for (int y3 = -3; y3 < 4; y3++)
@@ -107,8 +107,11 @@ public class Parser : MonoBehaviour
                                     int b = Convert.ToInt16(pressurePlate.y);
 //                                    gameMap[a, b].gameObject.GetComponent<PlateScript>().door[0] =
 //                                        gameMap[x4 + x3, y4 + y3];
-                                    gameMap[a, b].gameObject.GetComponentInChildren<PlateScript>().door[i++] =
-                                        gameMap[x4 + x3, y4 + y3].transform.Find("Door").gameObject;
+                                    var d = gameMap[a, b].gameObject.GetComponentInChildren<PlateScript>();
+                                    List<GameObject> t = d.door.ToList();
+                                    t.Remove(null);
+                                    t.Add(gameMap[x4 + x3, y4 + y3].transform.Find("Door").gameObject);
+                                    d.door = t.ToArray();
                                 }
                             }
                         }
