@@ -21,7 +21,7 @@ public class Parser : MonoBehaviour
     public GameObject pressurePlate;
     public GameObject hardPuzzleNormal;
 
-    private string file = @"C:\Users\siem\Documents\Dismemberd_improved\puzzle.xpr";
+//    private string file = @"C:\Users\siem\Documents\Dismemberd_improved\puzzle.xpr";
 
     private string fileData;
     private int x;
@@ -56,17 +56,58 @@ public class Parser : MonoBehaviour
             map[x2, y2] = t[1];
         }
 
+        // get rooms
         var rooms = getRooms(map);
 
         // Load in Map
+        GameObject[,] gameMap = new GameObject[x,y];
         for (int x2 = 0; x2 < x; x2++)
         {
             for (int y2 = 0; y2 < y; y2++)
             {
+                // add gameobject from map
                 GameObject tile = getGameObject(map[x2, y2]);
                 GameObject newTile = Instantiate(tile);
                 newTile.transform.position = new Vector3(x2 * tileSize, 0, y2 * tileSize);
+                gameMap[x2,y2] = newTile;
 
+                // link plate to door
+                if (rooms.Contains(new Vector2(x2-3, y2-3)))
+                {
+                    // need to move x2/y4 to center. (design error)
+                    int x4 = x2 - 3;
+                    int y4 = y2 - 3;
+
+                    // search for pressurePlate in room.
+                    Vector2 pressurePlate = new Vector2(0,0);
+                    for (int x3 = -3; x3 < 4; x3++)
+                    {
+                        for (int y3 = -3; y3 < 4; y3++)
+                        {
+                            if (map[x4 + x3, y4 + y3] == "pressurePlate")
+                            {
+                                pressurePlate = new Vector2(x4 + x3, y4 + y3);
+                            }
+                        }
+                    }
+
+                    // link doors
+                    for (int x3 = 1; x3 < 7; x3++)
+                    {
+                        for (int y3 = 1; y3 < 7; y3++)
+                        {
+                            if (map[x4 + x3, y4 + y3] == "door")
+                            {
+                                // link door
+                                int a = Convert.ToInt16(pressurePlate.x);
+                                int b = Convert.ToInt16(pressurePlate.y);
+                                gameMap[a, b].gameObject.GetComponent<PlateScript>().door[0] = gameMap[x4 - x3, y4 - y3];
+                            }
+                        }
+                    }
+                }
+
+                // rotate door
                 if (tile == door || tile == lockedDoor)
                 {
                     if (map[x2, y2 + 1] != "wall")
@@ -76,6 +117,7 @@ public class Parser : MonoBehaviour
                     }
                 }
 
+                // rotate entrance
                 if (tile == entrance)
                 {
                     if (map[x2, y2 + 1] != "wall")
@@ -138,6 +180,7 @@ public class Parser : MonoBehaviour
         List<Vector2> rooms = new List<Vector2>();
 
         int roomSize = 5;
+        int center = (roomSize%2!=0? roomSize/2+1: roomSize/2);
 
         for (int x2 = 0; x2 < x - roomSize; x2++)
         {
@@ -155,7 +198,11 @@ public class Parser : MonoBehaviour
 
                 if (!failed)
                 {
-                    rooms.Add(new Vector2(x2,y2));
+                    // [0,0]
+//                    rooms.Add(new Vector2(x2,y2));
+
+                    // [center,center]
+                    rooms.Add(new Vector2(x2 + center, y2 + center));
                 }
             }
         }
