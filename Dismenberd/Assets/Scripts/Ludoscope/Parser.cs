@@ -7,6 +7,8 @@ using UnityEngine;
 
 public class Parser : MonoBehaviour
 {
+    public TextAsset file2;
+
     public GameObject wall;
     public GameObject open;
     public GameObject door;
@@ -30,7 +32,8 @@ public class Parser : MonoBehaviour
     void Start()
     {
         // load data
-        fileData = System.IO.File.ReadAllText(file);
+//        fileData = System.IO.File.ReadAllText(file);
+        fileData = file2.text;
 
         // parse data
         string[] data = fileData.Split(' ');

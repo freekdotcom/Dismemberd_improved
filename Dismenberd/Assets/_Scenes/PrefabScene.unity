@@ -118,6 +118,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f17ed1a430958eb468b23595fc90fc41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  file2: {fileID: 4900000, guid: 405a1e6c5942f8e49b47fe96514a873b, type: 3}
   wall: {fileID: 1876950355433368, guid: a15c18f980ad79242b724b24f026f194, type: 2}
   open: {fileID: 1091230303898092, guid: 655bb4db965bf4149a2cdb2ae1e06e77, type: 2}
   door: {fileID: 1972026946419408, guid: 5a3041ce8e028424fa538fbbd188b71c, type: 2}
