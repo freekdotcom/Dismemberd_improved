@@ -72,11 +72,11 @@ public class Parser : MonoBehaviour
                 gameMap[x2,y2] = newTile;
 
                 // link plate to door
-                if (rooms.Contains(new Vector2(x2-3, y2-3)))
+                if (rooms.Contains(new Vector2(x2 - roomSize, y2 - roomSize)))
                 {
                     // need to move x2/y4 to center. (design error)
-                    int x4 = x2 - 3;
-                    int y4 = y2 - 3;
+                    int x4 = x2 - (roomSize % 2 != 0 ? roomSize / 2 + 1 : roomSize / 2);
+                    int y4 = y2 - (roomSize % 2 != 0 ? roomSize / 2 + 1 : roomSize / 2);
 
                     // search for pressurePlate in room.
                     Vector2 pressurePlate = new Vector2(0,0);
@@ -95,6 +95,7 @@ public class Parser : MonoBehaviour
                     if (!(pressurePlate == new Vector2(0, 0)))
                     {
                         // link doors
+                        int i = 0;
                         for (int x3 = -3; x3 < 4; x3++)
                         {
                             for (int y3 = -3; y3 < 4; y3++)
@@ -104,8 +105,10 @@ public class Parser : MonoBehaviour
                                     // link door
                                     int a = Convert.ToInt16(pressurePlate.x);
                                     int b = Convert.ToInt16(pressurePlate.y);
-                                    gameMap[a, b].gameObject.GetComponent<PlateScript>().door[0] =
-                                        gameMap[x4 + x3, y4 + y3];
+//                                    gameMap[a, b].gameObject.GetComponent<PlateScript>().door[0] =
+//                                        gameMap[x4 + x3, y4 + y3];
+                                    gameMap[a, b].gameObject.GetComponentInChildren<PlateScript>().door[i++] =
+                                        gameMap[x4 + x3, y4 + y3].transform.Find("Door").gameObject;
                                 }
                             }
                         }
@@ -180,11 +183,12 @@ public class Parser : MonoBehaviour
         }
     }
 
+    int roomSize = 5;
+
     private List<Vector2> getRooms(string[,] map)
     {
         List<Vector2> rooms = new List<Vector2>();
 
-        int roomSize = 5;
         int center = (roomSize%2!=0? roomSize/2+1: roomSize/2);
 
         for (int x2 = 0; x2 < x - roomSize; x2++)
@@ -207,7 +211,8 @@ public class Parser : MonoBehaviour
 //                    rooms.Add(new Vector2(x2,y2));
 
                     // [center,center]
-                    rooms.Add(new Vector2(x2 + center, y2 + center));
+//                    rooms.Add(new Vector2(x2 + center, y2 + center));
+                    rooms.Add(new Vector2(x2, y2));
                 }
             }
         }
